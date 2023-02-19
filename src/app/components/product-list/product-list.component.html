@@ -1,0 +1,12 @@
+<mat-drawer-container class="container">
+  <mat-drawer #drawer class="sidenav" mode="side" opened="true">
+    <button mat-stroked-button color="primary">Frame</button>
+    <button mat-stroked-button color="primary">Disc brake</button>
+    <button mat-flat-button color="primary">Handlebar</button>
+    <button mat-stroked-button color="primary">Saddle</button>
+  </mat-drawer>
+
+  <div class="sidenav-content">
+    <app-product-card *ngFor="let p of products" [name]="p.name" [price]="p.price" [imageUrl]="p.image"></app-product-card>
+  </div>
+</mat-drawer-container>
