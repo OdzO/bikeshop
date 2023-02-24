@@ -21,9 +21,10 @@ jobs:
       run: npm install
 
     - name: Build dist
-      run: npm run build
+      run: npm run build:prod
       
     - name: Configure AWS Credentials
+      if: success()
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
