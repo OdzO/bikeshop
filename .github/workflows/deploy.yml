@@ -31,10 +31,6 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
         
-    - name: Upload S3
-      uses: shallwefootball/s3-upload-action@master
-      with:
-        aws_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
-        aws_bucket: ${{ secrets.AWS_BUCKET }}
-        source_dir: 'dist/test-app'
+    - name: Copy files to the test website with the AWS CLI
+      run: |
+        aws s3 sync . s3://odzo-bikeshop
