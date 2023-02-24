@@ -33,4 +33,4 @@ jobs:
         
     - name: Copy files to the test website with the AWS CLI
       run: |
-        aws s3 sync . s3://odzo-bikeshop
+        aws s3 sync dist/test-app/. s3://odzo-bikeshop
