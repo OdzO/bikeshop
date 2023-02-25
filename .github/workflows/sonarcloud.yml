@@ -20,4 +20,4 @@ jobs:
       with:
         args: >
           -Dsonar.organization=odzo
-          -Dsonar.projectKey=bikeshop
+          -Dsonar.projectKey=OdzO_bikeshop
