@@ -14,6 +14,7 @@ jobs:
       
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
-      args: >
-        -Dsonar.organization=odzo
-        -Dsonar.projectKey=bikeshop
+      with:
+        args: >
+          -Dsonar.organization=odzo
+          -Dsonar.projectKey=bikeshop
