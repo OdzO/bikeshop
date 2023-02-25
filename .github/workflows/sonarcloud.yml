@@ -3,7 +3,7 @@ name: Trigger Sonarcloud analysis
 on:
   push:
     branches:
-    - *
+    - '**'
     
 jobs:
   sonarcloud:
