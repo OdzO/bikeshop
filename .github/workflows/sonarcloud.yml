@@ -1,4 +1,4 @@
-name: Trigger Sonarcloud analysis
+name: Trigger Sonarcloud analysis on all branches
 
 on:
   push:
