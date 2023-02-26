@@ -22,7 +22,7 @@ export class HeaderComponent {
   isUserLoggedIn(): boolean {
     let loggedIn = false;
     this.auth.isUserLoggedIn().subscribe((res) => {
-      return loggedIn = res;
+      loggedIn = res;
     });
     return loggedIn;
   }
