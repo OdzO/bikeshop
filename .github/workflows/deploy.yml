@@ -33,4 +33,4 @@ jobs:
         
     - name: Copy files to AWS S3
       run: |
-        aws s3 sync dist/test-app/. s3://odzo-bikeshop
+        aws s3 sync dist/. s3://odzo-bikeshop
