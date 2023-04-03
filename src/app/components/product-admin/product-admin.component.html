@@ -61,20 +61,41 @@
   <h3>Main fields</h3>
   <mat-form-field appearance="outline">
     <mat-label>Name</mat-label>
-    <input matInput [(ngModel)]="editProduct.name" placeholder="{{ editProduct.name }}" />
+    <input matInput [(ngModel)]="editProduct.name" placeholder="{{ editProduct.name }}" type="text" />
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Type</mat-label>
-    <input matInput [(ngModel)]="editProduct.type" placeholder="{{ editProduct.type }}" />
+    <input matInput [(ngModel)]="editProduct.type" placeholder="{{ editProduct.type }}" type="text" />
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Subtype</mat-label>
+    <input matInput [(ngModel)]="editProduct.subtype" placeholder="{{ editProduct.subtype }}" type="text" />
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Image</mat-label>
+    <input matInput [(ngModel)]="editProduct.image" placeholder="{{ editProduct.image }}" type="url" />
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Price</mat-label>
-    <input matInput [(ngModel)]="editProduct.price" placeholder="{{ editProduct.price }}" />
+    <input matInput [(ngModel)]="editProduct.price" placeholder="{{ editProduct.price }}" type="number" />
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Sale</mat-label>
+    <input matInput [(ngModel)]="editProduct.sale" placeholder="{{ editProduct.sale }}" type="number" />
   </mat-form-field>
 
   <h3>Attributes</h3>
-  <mat-form-field appearance="outline" *ngFor="let attr of editProduct.attributes | keyvalue">
-    <mat-label>{{ attr.key }}</mat-label>
-    <input matInput placeholder="{{ attr.value }}" value="{{ attr.value }}" />
-  </mat-form-field>
+  <div>
+    <button mat-raised-button (click)="onAddAttribute()">New attribute</button>
+  </div>
+  <div *ngFor="let attr of editProduct.attributes | keyvalue" style="width: 275px; float: left;">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ attr.key }}</mat-label>
+      <input matInput placeholder="{{ attr.value }}" value="{{ attr.value }}" [type]="typeof(attr.value) === 'string' ? 'text' : 'number'"/>
+      <button mat-icon-button matSuffix aria-label="Example icon button with a cancel icon" (click)="onDeleteAttribute(attr.key)">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-form-field>
+    
+  </div>
 </div>
