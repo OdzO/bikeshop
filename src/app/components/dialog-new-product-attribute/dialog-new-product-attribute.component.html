@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>New attribute</h2>
+<div mat-dialog-content>
+  <mat-form-field appearance="outline">
+    <mat-label>Type</mat-label>
+    <mat-select [formControl]="attrType">
+      <mat-option value="text">Text</mat-option>
+      <mat-option value="number">Number</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="data.attrName" />
+  </mat-form-field>
+  <mat-form-field appearance="outline" *ngIf="attrType.value === 'text'">
+    <mat-label>Value</mat-label>
+    <input matInput [(ngModel)]="data.attrValue" type="text" />
+  </mat-form-field>
+  <mat-form-field appearance="outline" *ngIf="attrType.value === 'number'">
+    <mat-label>Value</mat-label>
+    <input matInput [(ngModel)]="data.attrValue" type="number" />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button cdkFocusInitial [mat-dialog-close]="data">Ok</button>
+</div>

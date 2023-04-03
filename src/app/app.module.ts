@@ -18,7 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
 import { UserPageComponent } from './components/user-page/user-page.component';
 import { LoginComponent } from './components/login/login.component';
@@ -27,6 +27,8 @@ import { AccVerifyComponent } from './components/acc-verify/acc-verify.component
 import { HeaderComponent } from './components/header/header.component';
 import { ProductAdminComponent } from './components/product-admin/product-admin.component';
 import { MatTableModule } from '@angular/material/table';
+import { DialogNewProductAttributeComponent } from './components/dialog-new-product-attribute/dialog-new-product-attribute.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import { MatTableModule } from '@angular/material/table';
     AccVerifyComponent,
     HeaderComponent,
     ProductAdminComponent,
+    DialogNewProductAttributeComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,6 +61,8 @@ import { MatTableModule } from '@angular/material/table';
     MatBadgeModule,
     MatTabsModule,
     MatTableModule,
+    MatDialogModule,
+    ReactiveFormsModule 
   ],
   providers: [],
   bootstrap: [AppComponent],

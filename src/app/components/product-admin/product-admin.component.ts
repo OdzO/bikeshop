@@ -1,7 +1,9 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { Product } from 'src/app/interfaces/product';
 import { DynamodbService } from 'src/app/services/dynamodb.service';
+import { DialogNewProductAttributeComponent } from '../dialog-new-product-attribute/dialog-new-product-attribute.component';
 
 @Component({
   selector: 'app-product-admin',
@@ -16,7 +18,7 @@ export class ProductAdminComponent implements AfterViewInit {
   @ViewChild(MatTable) table!: MatTable<Product>;
   displayedColumns: string[] = ['name', 'type', 'price', 'action'];
 
-  constructor(private db: DynamodbService) { }
+  constructor(private db: DynamodbService, public dialog: MatDialog) { }
 
   ngAfterViewInit(): void {
     this.db.getProducts().subscribe(resp => {
@@ -57,4 +59,31 @@ export class ProductAdminComponent implements AfterViewInit {
     this.table.renderRows();
     this.onEdit(pkey);
   }
+
+  onAddAttribute() {
+    const attrName = "";
+    const attrValue = "";
+    const dialogRef = this.dialog.open(DialogNewProductAttributeComponent, { data: { attrName: attrName, attrValue: attrValue } });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (this.editProduct && result.attrName && result.attrValue) {
+        if (this.editProduct.attributes != undefined) {
+          this.editProduct.attributes[result.attrName] = result.attrValue;
+        } else {
+          this.editProduct.attributes = { [result.attrName]: result.attrValue };
+        }
+      }
+    });
+  }
+
+  onDeleteAttribute(attrKey: string){
+    if(this.editProduct && this.editProduct.attributes != undefined)
+    delete this.editProduct.attributes[attrKey];
+  }
+
+  typeof(value: unknown){
+    return typeof value;
+  }
+
+
 }
