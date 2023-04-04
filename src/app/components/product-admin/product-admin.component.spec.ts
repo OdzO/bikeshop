@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductAdminComponent } from './product-admin.component';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
 
 describe('ProductAdminComponent', () => {
   let component: ProductAdminComponent;
@@ -8,7 +11,9 @@ describe('ProductAdminComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ProductAdminComponent]
+      imports: [MatDialogModule, MatTableModule],
+      declarations: [ProductAdminComponent],
+      providers: [HttpClient, HttpHandler]
     })
       .compileComponents();
 

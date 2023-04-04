@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductListComponent } from './product-list.component';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ProductListComponent', () => {
   let component: ProductListComponent;
@@ -8,7 +11,9 @@ describe('ProductListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ProductListComponent]
+      imports: [MatSidenavModule, BrowserAnimationsModule],
+      declarations: [ProductListComponent],
+      providers: [HttpClient, HttpHandler]
     })
       .compileComponents();
 
