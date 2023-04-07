@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { Product } from 'src/app/interfaces/product';
@@ -10,7 +10,7 @@ import { DialogNewProductAttributeComponent } from '../dialog-new-product-attrib
   templateUrl: './product-admin.component.html',
   styleUrls: ['./product-admin.component.scss']
 })
-export class ProductAdminComponent implements AfterViewInit {
+export class ProductAdminComponent {
 
   products: Product[] = [];
   editProduct: Product | null = null;
@@ -18,13 +18,11 @@ export class ProductAdminComponent implements AfterViewInit {
   @ViewChild(MatTable) table!: MatTable<Product>;
   displayedColumns: string[] = ['name', 'type', 'price', 'action'];
 
-  constructor(private db: DynamodbService, public dialog: MatDialog) { }
-
-  ngAfterViewInit(): void {
+  constructor(private db: DynamodbService, public dialog: MatDialog) {
     this.db.getProducts().subscribe(resp => {
       this.products = resp.Items;
     });
-  }
+   }
 
   onEdit(pkey: string) {
     this.products.forEach(p => {
