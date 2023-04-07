@@ -2,12 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductAdminComponent } from './product-admin.component';
 import { HttpClient, HttpHandler } from '@angular/common/http';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { DynamodbService } from 'src/app/services/dynamodb.service';
 import { of } from 'rxjs';
 import { Product } from 'src/app/interfaces/product';
-import { DialogNewProductAttributeComponent } from '../dialog-new-product-attribute/dialog-new-product-attribute.component';
 
 describe('ProductAdminComponent', () => {
   let component: ProductAdminComponent;
@@ -44,8 +43,8 @@ describe('ProductAdminComponent', () => {
         type: 'frame',
       },
     ],
-    Count: 2,
-    ScannedCount: 2,
+    Count: 4,
+    ScannedCount: 4,
   };
 
   beforeEach(async () => {
@@ -74,11 +73,6 @@ describe('ProductAdminComponent', () => {
     expect(component).toBeTruthy();
     expect(component.products.length).toEqual(mockProductList.Items.length);
   });
-
-  /*it('should select the correct item to edit', () => {
-    component.onEdit('test1');
-    expect(component.editProduct).toEqual(<Product>mockProductList.Items[0]);
-  });*/
 
   it('should empty edit product on cancel', () => {
     component.onCancel();
