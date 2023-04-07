@@ -28,7 +28,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { ProductAdminComponent } from './components/product-admin/product-admin.component';
 import { MatTableModule } from '@angular/material/table';
 import { DialogNewProductAttributeComponent } from './components/dialog-new-product-attribute/dialog-new-product-attribute.component';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -41,7 +41,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     AccVerifyComponent,
     HeaderComponent,
     ProductAdminComponent,
-    DialogNewProductAttributeComponent,
+    DialogNewProductAttributeComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +62,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatTabsModule,
     MatTableModule,
     MatDialogModule,
-    ReactiveFormsModule 
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
