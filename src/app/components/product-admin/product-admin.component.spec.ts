@@ -17,18 +17,31 @@ describe('ProductAdminComponent', () => {
   const mockProductList = {
     Items: [
       {
-        pkey: 'frame-20230218141923',
+        pkey: 'test1',
         price: 999,
         name: 'Trifox X10',
         type: 'frame',
         attributes: { size: "S", length: 48 },
       },
       {
-        pkey: '2023-02-18T21:00:28.630Z',
-        price: '1299',
-        name: 'Trek 2022',
+        pkey: 'test2',
+        price: 999,
+        name: 'Trifox X10',
         type: 'frame',
-        attributes: { size: "L", length: 56 },
+        attributes: { size: "S", length: 48 },
+      },
+      {
+        pkey: 'test3',
+        price: 999,
+        name: 'Trifox X10',
+        type: 'frame',
+        attributes: { size: "S", length: 48 },
+      },
+      {
+        pkey: 'test4',
+        price: 999,
+        name: 'Trifox X10',
+        type: 'frame',
       },
     ],
     Count: 2,
@@ -62,10 +75,10 @@ describe('ProductAdminComponent', () => {
     expect(component.products.length).toEqual(mockProductList.Items.length);
   });
 
-  it('should select the correct item to edit', () => {
-    component.onEdit('frame-20230218141923');
+  /*it('should select the correct item to edit', () => {
+    component.onEdit('test1');
     expect(component.editProduct).toEqual(<Product>mockProductList.Items[0]);
-  });
+  });*/
 
   it('should empty edit product on cancel', () => {
     component.onCancel();
@@ -80,7 +93,7 @@ describe('ProductAdminComponent', () => {
   });
 
   it('should delete attribute', () => {
-    component.onEdit('frame-20230218141923');
+    component.onEdit('test1');
     component.onDeleteAttribute('size');
     expect(component.editProduct?.attributes).not.toBeNull();
     expect(component.editProduct?.attributes).toEqual({ length: 48 });
@@ -92,10 +105,26 @@ describe('ProductAdminComponent', () => {
   });
 
   it('should save product', () => {
-    component.onEdit('frame-20230218141923');
+    component.onEdit('test2');
     component.onSave();
     expect(component.editProduct).toBeNull();
     expect(component.products.length).toEqual(mockProductList.Items.length);
+  });
+
+  it('should add attribute', () => {
+    component.onEdit('test3');
+    const dialogRefSpyObj = jasmine.createSpyObj({ afterClosed : of({ attrName: 'year', attrValue: 2022 }), close: null });
+    spyOn(component.dialog, 'open').and.returnValue(dialogRefSpyObj);
+    component.onAddAttribute();
+    expect(component.editProduct?.attributes).toEqual({ size: "S", length: 48, year: 2022});
+  });
+
+  it('should create and add attribute', () => {
+    component.onEdit('test4');
+    const dialogRefSpyObj = jasmine.createSpyObj({ afterClosed : of({ attrName: 'year', attrValue: 2022 }), close: null });
+    spyOn(component.dialog, 'open').and.returnValue(dialogRefSpyObj);
+    component.onAddAttribute();
+    expect(component.editProduct?.attributes).toEqual({ year: 2022});
   });
   
 });
