@@ -1,0 +1,25 @@
+#cartContainer {
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 400px;
+  max-width: 800px;
+  text-align: center;
+}
+
+table th:nth-of-type(2) {
+  width: 15%;
+  min-width: 60px;
+}
+
+table th:nth-of-type(3) {
+  width: 10%;
+  min-width: 40px;
+}
+
+tr.mat-mdc-footer-row td {
+  font-weight: bold;
+}
+
+#cartHeader {
+    padding: 10px 0px 10px 0px;
+}

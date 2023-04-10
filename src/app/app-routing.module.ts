@@ -11,12 +11,14 @@ import { UserPageComponent } from './components/user-page/user-page.component';
 import { AuthGuard } from './guards/auth.guard';
 
 import { AuthService } from './services/auth.service';
+import { CartPageComponent } from './components/cart-page/cart-page.component';
 
 const routes: Routes = [
   { path: 'news', component: NewsComponent },
   { path: 'product-list', component: ProductListComponent },
   { path: 'login', component: LoginComponent },
   { path: 'verification', component: AccVerifyComponent },
+  { path: 'cart', component: CartPageComponent },
   { path: 'admin', component: ProductAdminComponent, canActivate: [AuthGuard] },
   { path: 'user-page', component: UserPageComponent, canActivate: [AuthGuard] },
 ];

@@ -5,8 +5,8 @@
     <button mat-icon-button class="example-icon person-icon" aria-label="User profile icon" (click)="onUserIcon()">
       <mat-icon>person</mat-icon>
     </button>
-    <button mat-icon-button class="example-icon shopping_cart-icon" aria-label="Shopping cart icon" disabled="true">
-      <mat-icon matBadge="0" matBadgeColor="accent">shopping_cart</mat-icon>
+    <button mat-icon-button routerLink="/cart" class="example-icon shopping_cart-icon" aria-label="Shopping cart icon" [disabled]="cart.getCartCount() === 0">
+      <mat-icon matBadge="{{cart.getCartCount()}}" matBadgeColor="accent">shopping_cart</mat-icon>
     </button>
   </mat-toolbar-row>
 
