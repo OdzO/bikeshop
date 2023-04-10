@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { Product } from 'src/app/interfaces/product';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-product-card',
@@ -8,7 +10,7 @@ import { Component, Input } from '@angular/core';
 
 export class ProductCardComponent {
 
-  @Input() name!: string;
-  @Input() price!: number;
-  @Input() imageUrl!: string | undefined;
+  constructor(public cart: CartService) { }
+
+  @Input() product!: Product;
 }

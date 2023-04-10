@@ -9,6 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { UserPageComponent } from '../user-page/user-page.component';
 import { LoginComponent } from '../login/login.component';
 import { Router } from '@angular/router';
+import { MatBadgeModule } from '@angular/material/badge';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -20,7 +21,7 @@ describe('HeaderComponent', () => {
     const spy = jasmine.createSpyObj('AuthService', ['isUserLoggedIn', 'isLoggedIn']);
 
     await TestBed.configureTestingModule({
-      imports: [MatToolbarModule, MatIconModule, RouterTestingModule.withRoutes(
+      imports: [MatToolbarModule, MatIconModule, MatBadgeModule, RouterTestingModule.withRoutes(
         [{ path: 'user-page', component: UserPageComponent }, { path: 'login', component: LoginComponent }]
       )],
       declarations: [HeaderComponent],

@@ -17,6 +17,13 @@ describe('ProductCardComponent', () => {
 
     fixture = TestBed.createComponent(ProductCardComponent);
     component = fixture.componentInstance;
+    component.product = {
+      pkey: 'test1',
+      price: 999,
+      name: 'Trifox X10',
+      type: 'frame',
+      attributes: { size: "S", length: 48 },
+    }
     fixture.detectChanges();
   });
 
