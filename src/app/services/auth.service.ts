@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoUserPool, CognitoUserSession } from 'amazon-cognito-identity-js';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { Observable } from 'rxjs/internal/Observable';
+import { AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoUserPool, CognitoUserSession, ICognitoUserData } from 'amazon-cognito-identity-js';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -11,8 +9,7 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
 
   verification_email = "";
-  private userPool: CognitoUserPool;
-  private userLoggedIn: BehaviorSubject<boolean>;
+  userPool: CognitoUserPool;
 
   constructor(private router: Router) {
     const poolData = {
@@ -20,7 +17,6 @@ export class AuthService {
       ClientId: environment.cognitoAppClientId
     };
     this.userPool = new CognitoUserPool(poolData);
-    this.userLoggedIn = new BehaviorSubject<boolean>(false);
   }
 
   /**
@@ -50,7 +46,6 @@ export class AuthService {
   signOut(): void {
     const cognitoUser = this.userPool.getCurrentUser();
     cognitoUser?.signOut();
-    this.userLoggedIn.next(false);
     this.router.navigate(["login"])
   }
 
@@ -107,12 +102,21 @@ export class AuthService {
       isAuth = session.isValid();
     }
 
-    this.userLoggedIn.next(isAuth);
     return isAuth;
   }
 
-  isUserLoggedIn(): Observable<boolean> {
-    return this.userLoggedIn.asObservable();
+  isUserAdmin(): boolean {
+    let admin = false;
+
+    const session: CognitoUserSession | null = this.getCognitoUserSession();
+    if (session) {
+      const groups: Array<string> = session.getAccessToken().payload['cognito:groups'];
+      if(groups){
+        admin = groups.findIndex(x => x.valueOf() === environment.cognitoAdminGroupName) != -1;
+      }
+    }
+
+    return admin;
   }
 
   private getCognitoUserSession(): CognitoUserSession | null {

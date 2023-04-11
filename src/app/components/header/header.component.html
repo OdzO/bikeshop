@@ -13,6 +13,6 @@
   <mat-toolbar-row>
     <a mat-raised-button routerLink="/news" routerLinkActive="active" ariaCurrentWhenActive="page">News</a>
     <a mat-raised-button routerLink="/product-list" routerLinkActive="active" ariaCurrentWhenActive="page">Shop</a>
-    <a mat-raised-button routerLink="/admin" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="isUserLoggedIn()">Admin</a>
+    <a mat-raised-button routerLink="/admin" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="auth.isUserAdmin()">Admin</a>
   </mat-toolbar-row>
 </mat-toolbar>
