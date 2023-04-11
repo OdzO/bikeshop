@@ -10,7 +10,7 @@ import { CartService } from 'src/app/services/cart.service';
 })
 export class HeaderComponent {
 
-  constructor(private router: Router, private auth: AuthService, public cart: CartService) { }
+  constructor(private router: Router, public auth: AuthService, public cart: CartService) { }
 
   onUserIcon() {
     if (this.auth.isLoggedIn()) {
@@ -18,13 +18,5 @@ export class HeaderComponent {
     } else {
       this.router.navigate(['login']);
     }
-  }
-
-  isUserLoggedIn(): boolean {
-    let loggedIn = false;
-    this.auth.isUserLoggedIn().subscribe((res) => {
-      loggedIn = res;
-    });
-    return loggedIn;
   }
 }

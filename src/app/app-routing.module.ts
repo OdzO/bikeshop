@@ -8,10 +8,10 @@ import { ProductAdminComponent } from './components/product-admin/product-admin.
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { UserPageComponent } from './components/user-page/user-page.component';
 
-import { AuthGuard } from './guards/auth.guard';
-
 import { AuthService } from './services/auth.service';
 import { CartPageComponent } from './components/cart-page/cart-page.component';
+import { AdminGuard } from './guards/admin.guard';
+import { UserGuard } from './guards/user.guard';
 
 const routes: Routes = [
   { path: 'news', component: NewsComponent },
@@ -19,8 +19,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'verification', component: AccVerifyComponent },
   { path: 'cart', component: CartPageComponent },
-  { path: 'admin', component: ProductAdminComponent, canActivate: [AuthGuard] },
-  { path: 'user-page', component: UserPageComponent, canActivate: [AuthGuard] },
+  { path: 'admin', component: ProductAdminComponent, canActivate: [AdminGuard] },
+  { path: 'user-page', component: UserPageComponent, canActivate: [UserGuard] },
 ];
 
 @NgModule({

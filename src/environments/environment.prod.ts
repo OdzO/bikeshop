@@ -3,6 +3,7 @@ export const environment = {
   envName: 'prod',
   cognitoUserPoolId: 'us-east-2_sMPrRcJOw',
   cognitoAppClientId: '3vfo154di94ksai5i8mbvr17bc',
+  cognitoAdminGroupName: 'shopAdmins',
   dynamoDbApi: 'https://gqb0xdfy6d.execute-api.us-east-2.amazonaws.com/dev/items',
   dynamoDbTableProducts: '?TableName=Products'
 };

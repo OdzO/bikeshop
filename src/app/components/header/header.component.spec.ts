@@ -18,7 +18,7 @@ describe('HeaderComponent', () => {
   let router: Router;
 
   beforeEach(async () => {
-    const spy = jasmine.createSpyObj('AuthService', ['isUserLoggedIn', 'isLoggedIn']);
+    const spy = jasmine.createSpyObj('AuthService', ['isUserAdmin','isLoggedIn']);
 
     await TestBed.configureTestingModule({
       imports: [MatToolbarModule, MatIconModule, MatBadgeModule, RouterTestingModule.withRoutes(
@@ -30,7 +30,6 @@ describe('HeaderComponent', () => {
       .compileComponents();
 
     authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
-    authServiceSpy.isUserLoggedIn = jasmine.createSpy().and.returnValue(of(true));
 
     router = TestBed.inject(Router);
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
