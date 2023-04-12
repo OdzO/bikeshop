@@ -15,7 +15,8 @@
 .sidenav {
   padding: 10px;
   
-  button {
-    width: calc(100% - 5px);
+  mat-button-toggle {
+    min-width: 150px;
+    max-width: 200px;
   }
 }

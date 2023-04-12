@@ -28,6 +28,11 @@ export class DynamodbService {
     return this.http.get<DynamoDbScan>(url);
   }
 
+  getShopData() {
+    const url = environment.dynamoDbApi + environment.dynamoDbTableShopData;
+    return this.http.get<DynamoDbScan>(url);
+  }
+
   commitProduct(product: Product) {
     const entry = { TableName: 'Products', Item: product };
     return this.http.post(environment.dynamoDbApi, entry, this.setHeader());

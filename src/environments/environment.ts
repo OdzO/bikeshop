@@ -5,5 +5,6 @@ export const environment = {
   cognitoAppClientId: '3vfo154di94ksai5i8mbvr17bc',
   cognitoAdminGroupName: 'shopAdmins',
   dynamoDbApi: 'https://gqb0xdfy6d.execute-api.us-east-2.amazonaws.com/dev/items',
-  dynamoDbTableProducts: '?TableName=Products'
+  dynamoDbTableProducts: '?TableName=Products',
+  dynamoDbTableShopData: '?TableName=ShopData'
 };

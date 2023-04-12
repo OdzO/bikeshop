@@ -47,8 +47,19 @@ describe('ProductAdminComponent', () => {
     ScannedCount: 4,
   };
 
+  const mockShopData = {
+    Items: [
+      {
+        key: 'ProductTypes',
+        value: [{ "S": "Frame" }, { "S": "Handlebar" }, { "S": "Saddle" }, { "S": "Crankset" }]
+      }
+    ],
+    Count: 1,
+    ScannedCount: 1,
+  }
+
   beforeEach(async () => {
-    const spy = jasmine.createSpyObj('DynamodbService', ['getProducts','commitProduct']);
+    const spy = jasmine.createSpyObj('DynamodbService', ['getProducts','commitProduct', 'getShopData']);
 
     await TestBed.configureTestingModule({
       imports: [MatDialogModule, MatTableModule],
@@ -59,6 +70,7 @@ describe('ProductAdminComponent', () => {
 
     dbServiceSpy = TestBed.inject(DynamodbService) as jasmine.SpyObj<DynamodbService>;
     dbServiceSpy.getProducts = jasmine.createSpy().and.returnValue(of(mockProductList));
+    dbServiceSpy.getShopData = jasmine.createSpy().and.returnValue(of(mockShopData));
     dbServiceSpy.commitProduct = jasmine.createSpy().and.returnValue(of(true));
 
     fixture = TestBed.createComponent(ProductAdminComponent);
