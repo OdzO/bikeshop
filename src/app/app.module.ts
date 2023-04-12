@@ -31,6 +31,7 @@ import { DialogNewProductAttributeComponent } from './components/dialog-new-prod
 import { MatDialogModule } from '@angular/material/dialog';
 import { CartPageComponent } from './components/cart-page/cart-page.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { SalePipe } from './pipes/sale.pipe';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     HeaderComponent,
     ProductAdminComponent,
     DialogNewProductAttributeComponent,
-    CartPageComponent
+    CartPageComponent,
+    SalePipe
   ],
   imports: [
     BrowserModule,
