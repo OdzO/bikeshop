@@ -11,9 +11,9 @@ import { DialogNewProductAttributeComponent } from '../dialog-new-product-attrib
   styleUrls: ['./product-admin.component.scss']
 })
 export class ProductAdminComponent {
-
   products: Product[] = [];
   editProduct: Product | null = null;
+  types = [];
 
   @ViewChild(MatTable) table!: MatTable<Product>;
   displayedColumns: string[] = ['name', 'type', 'price', 'action'];
@@ -21,6 +21,10 @@ export class ProductAdminComponent {
   constructor(private db: DynamodbService, public dialog: MatDialog) {
     this.db.getProducts().subscribe(resp => {
       this.products = resp.Items;
+    });
+
+    this.db.getShopData().subscribe(resp => {
+      this.types = resp.Items[resp.Items.findIndex(x => x.key === 'ProductTypes')].value;
     });
    }
 

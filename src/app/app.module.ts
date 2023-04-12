@@ -30,6 +30,7 @@ import { MatTableModule } from '@angular/material/table';
 import { DialogNewProductAttributeComponent } from './components/dialog-new-product-attribute/dialog-new-product-attribute.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CartPageComponent } from './components/cart-page/cart-page.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { CartPageComponent } from './components/cart-page/cart-page.component';
     MatTabsModule,
     MatTableModule,
     MatDialogModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatButtonToggleModule
   ],
   providers: [],
   bootstrap: [AppComponent],
