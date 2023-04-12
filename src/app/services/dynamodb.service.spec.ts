@@ -31,6 +31,10 @@ describe('DynamodbService', () => {
     expect(service.getProducts()).not.toBeNull();
   });
 
+  it('getShopData', () => {
+    expect(service.getShopData()).not.toBeNull();
+  });
+
   it('should commit product', () => {
     authServiceSpy.getToken = jasmine.createSpy().and.returnValue('mockToken');
     service.commitProduct(<Product>{});
