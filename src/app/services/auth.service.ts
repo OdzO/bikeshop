@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoUserPool, CognitoUserSession } from 'amazon-cognito-identity-js';
+import { AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoUserPool, CognitoUserSession, ICognitoUserData } from 'amazon-cognito-identity-js';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -31,8 +31,8 @@ export class AuthService {
       Password: password,
     });
 
-    const userData = { Username: email, Pool: this.userPool };
-    const cognitoUser = new CognitoUser(userData);
+    const userdata = { Username: email, Pool: this.userPool };
+    const cognitoUser = this.getCognitoUser(userdata);
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: () => {
         this.router.navigate(["user-page"]);
@@ -66,8 +66,8 @@ export class AuthService {
   }
 
   confirmRegistration(code: string) {
-    const userData = { Username: this.verification_email, Pool: this.userPool };
-    const cognitoUser = new CognitoUser(userData);
+    const userdata = { Username: this.verification_email, Pool: this.userPool };
+    const cognitoUser = this.getCognitoUser(userdata);
     cognitoUser.confirmRegistration(code, false, (err, result) => {
       if (err) {
         alert(err.message || JSON.stringify(err));
@@ -133,5 +133,9 @@ export class AuthService {
       })
     }
     return cognitoSession;
+  }
+
+  private getCognitoUser(userdata: ICognitoUserData): CognitoUser {
+    return new CognitoUser(userdata);
   }
 }

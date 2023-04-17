@@ -3,18 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AccVerifyComponent } from './components/acc-verify/acc-verify.component';
 import { LoginComponent } from './components/login/login.component';
-import { NewsComponent } from './components/news/news.component';
 import { ProductAdminComponent } from './components/product-admin/product-admin.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { UserPageComponent } from './components/user-page/user-page.component';
 
-import { AuthService } from './services/auth.service';
 import { CartPageComponent } from './components/cart-page/cart-page.component';
 import { AdminGuard } from './guards/admin.guard';
 import { UserGuard } from './guards/user.guard';
 
 const routes: Routes = [
-  { path: 'news', component: NewsComponent },
+  { path: '', component: ProductListComponent },
   { path: 'product-list', component: ProductListComponent },
   { path: 'login', component: LoginComponent },
   { path: 'verification', component: AccVerifyComponent },
@@ -25,7 +23,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-  providers: [AuthService],
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }

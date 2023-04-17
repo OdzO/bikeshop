@@ -13,7 +13,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
-import { NewsComponent } from './components/news/news.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -38,7 +37,6 @@ import { SalePipe } from './pipes/sale.pipe';
     AppComponent,
     ProductCardComponent,
     ProductListComponent,
-    NewsComponent,
     UserPageComponent,
     LoginComponent,
     AccVerifyComponent,

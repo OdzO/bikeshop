@@ -1,30 +1,34 @@
 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" animationDuration="0ms">
   <mat-tab label="Login">
-    <form (submit)="onSignIn(signInForm)" #signInForm="ngForm">
+    <form (submit)="onSignIn()" [formGroup]="loginForm">
       <mat-form-field>
         <mat-label>Email</mat-label>
-        <input matInput [(ngModel)]="email" type="email" name="email" placeholder="Enter email address" required />
+        <input matInput formControlName="email" type="email" placeholder="Enter email address" />
+        <mat-error *ngIf="loginForm.controls.email.invalid">{{ getErrorMessage(loginForm.controls.email) }}</mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Password</mat-label>
-        <input matInput [(ngModel)]="password" type="password" name="password" placeholder="Enter password" required />
+        <input matInput formControlName="password" type="password" placeholder="Enter password" />
+        <mat-error *ngIf="loginForm.controls.password.invalid">{{ getErrorMessage(loginForm.controls.password) }}</mat-error>
       </mat-form-field>
       <button mat-raised-button type="submit">Login</button>
     </form>
   </mat-tab>
   <mat-tab label="Sign-up">
-    <form (submit)="onSignUp(signUpForm)" #signUpForm="ngForm">
+    <form (submit)="onSignUp()" [formGroup]="loginForm">
       <mat-form-field>
         <mat-label>Email</mat-label>
-        <input matInput [(ngModel)]="email" type="email" name="email" placeholder="Enter email address" required />
+        <input matInput formControlName="email" type="email" placeholder="Enter email address" />
+        <mat-error *ngIf="loginForm.controls.email.invalid">{{ getErrorMessage(loginForm.controls.email) }}</mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <input matInput [(ngModel)]="name" type="text" name="name" placeholder="Enter username" />
+        <input matInput formControlName="name" type="text" placeholder="Enter username" />
       </mat-form-field>
       <mat-form-field>
         <mat-label>Password</mat-label>
-        <input matInput [(ngModel)]="password" type="password" name="password" placeholder="Enter password" required />
+        <input matInput formControlName="password" type="password" placeholder="Enter password" />
+        <mat-error *ngIf="loginForm.controls.password.invalid">{{ getErrorMessage(loginForm.controls.password) }}</mat-error>
       </mat-form-field>
       <button mat-raised-button type="submit">Sign up</button>
     </form>
