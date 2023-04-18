@@ -48,8 +48,8 @@ export class LoginComponent {
       }
       const hasUpperCase = /[A-Z]+/.test(value);
       const hasLowerCase = /[a-z]+/.test(value);
-      const hasNumeric = /[0-9]+/.test(value);
-      const hasSpecial = /[^0-9a-zA-Z]/.test(value);
+      const hasNumeric = /\d+/.test(value);
+      const hasSpecial = /[^\da-zA-Z]/.test(value);
       const passwordValid = hasUpperCase && hasLowerCase && hasNumeric && hasSpecial;
       const result = {
         password: {
