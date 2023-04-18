@@ -3,14 +3,12 @@ import { TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CognitoUserAttribute, CognitoUserPool, ISignUpResult, NodeCallback } from 'amazon-cognito-identity-js';
-import { CognitoUser } from 'amazon-cognito-identity-js';
+import { AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoUserPool, CognitoUserSession, IAuthenticationCallback, ISignUpResult, NodeCallback } from 'amazon-cognito-identity-js';
 
 //This is just a dummy test class for the service
 describe('AuthService', () => {
   let service: AuthService;
   let router: Router;
-
   const mockUserPool = new CognitoUserPool({UserPoolId: 'us-east-2_sMPrRasda', ClientId: 'asd'});
 
   beforeEach(() => {
@@ -22,6 +20,8 @@ describe('AuthService', () => {
     
     router = TestBed.inject(Router);
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+
+    spyOn(window, 'alert').and.stub;
     
     service = TestBed.inject(AuthService);
     service.userPool = mockUserPool;
@@ -31,17 +31,28 @@ describe('AuthService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should fail sign in', () => {
+  it('should sign in', () => {
+    const cu = new CognitoUser({Username: 'MockUser', Pool: mockUserPool});
+    const spy = spyOn<any>(service, 'getCognitoUser').and.returnValue(cu);
+    spyOn(cu, 'authenticateUser').and.callFake((authenticationDetails: AuthenticationDetails, callbacks: IAuthenticationCallback) => {
+      const cusession = jasmine.createSpyObj('CognitoUserSession', ['signOut']);
+      callbacks.onSuccess.call('', cusession);
+    });
+    
     service.signIn('email','password');
+    expect(cu.authenticateUser).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['user-page']);
   });
 
-  it('should fail sign up', () => {
-    spyOn(mockUserPool, 'signUp').and.callFake((username: string, password: string, userAttributes: CognitoUserAttribute[], validationData: CognitoUserAttribute[], callback: NodeCallback<Error, ISignUpResult>) => {
-      const err = new Error('MockError');
-      callback.call(null, err, undefined);
+  it('should fail sign in', () => {
+    const cu = new CognitoUser({Username: 'MockUser', Pool: mockUserPool});
+    spyOn<any>(service, 'getCognitoUser').and.returnValue(cu);
+    spyOn(cu, 'authenticateUser').and.callFake((authenticationDetails: AuthenticationDetails, callbacks: IAuthenticationCallback) => {
+      const cusession = jasmine.createSpyObj('CognitoUserSession', ['signOut']);
+      callbacks.onFailure.call('', cusession);
     });
-    service.signUp('email','password','name');
-    expect(router.navigate).not.toHaveBeenCalledWith(['verification']);
+    service.signIn('email','password');
+    expect(cu.authenticateUser).toHaveBeenCalled();
   });
 
   it('should sign up', () => {
@@ -53,12 +64,42 @@ describe('AuthService', () => {
     expect(router.navigate).toHaveBeenCalledWith(['verification']);
   });
 
-  it('should fail sign out', () => {
-    service.signOut();
+  it('should fail sign up', () => {
+    spyOn(mockUserPool, 'signUp').and.callFake((username: string, password: string, userAttributes: CognitoUserAttribute[], validationData: CognitoUserAttribute[], callback: NodeCallback<Error, ISignUpResult>) => {
+      const err = new Error();
+      callback.call(null, err, undefined);
+    });
+    service.signUp('email','password','name');
+    expect(router.navigate).not.toHaveBeenCalledWith(['verification']);
   });
 
-  it('should fail registration confirm', () => {
+  it('should sign out user', () => {
+    const cu = jasmine.createSpyObj('CognitoUser', ['signOut']);
+    spyOn(mockUserPool, 'getCurrentUser').and.returnValue(cu);
+    service.signOut();
+    expect(router.navigate).toHaveBeenCalledWith(['login']);
+  });
+
+  it('should confirm registration', () => {
+    const cu = new CognitoUser({Username: 'MockUser', Pool: mockUserPool});
+    spyOn<any>(service, 'getCognitoUser').and.returnValue(cu);
+    spyOn(cu, 'confirmRegistration').and.callFake((code: string, forceAliasCreation: false, callback: NodeCallback<any, any>) => {
+      callback.call(null, null, true);
+    })
     service.confirmRegistration('code');
+    expect(cu.confirmRegistration).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['user-page']);
+  });
+
+  it('should fail confirm registration', () => {
+    const cu = new CognitoUser({Username: 'MockUser', Pool: mockUserPool});
+    spyOn<any>(service, 'getCognitoUser').and.returnValue(cu);
+    spyOn(cu, 'confirmRegistration').and.callFake((code: string, forceAliasCreation: false, callback: NodeCallback<any, any>) => {
+      callback.call(null, true);
+    })
+    service.confirmRegistration('code');
+    expect(cu.confirmRegistration).toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalledWith(['user-page']);
   });
 
   it('should get token if session is valid', () => {
@@ -87,9 +128,30 @@ describe('AuthService', () => {
   });
 
   it('should return empty username if user session invalid', () => {
+    spyOn<any>(service, 'getCognitoUserSession').and.returnValue(null);
+    expect(service.getCurrentUserName()).toEqual('');
+  });
+
+  it('should fail to get CognitoUserSession', () => {
     const cu = new CognitoUser({Username: 'MockUser', Pool: mockUserPool});
     spyOn(mockUserPool, 'getCurrentUser').and.returnValue(cu);
-    expect(service.getCurrentUserName()).toEqual('');
+    spyOn(cu, 'getSession').and.callFake((callback: ((error: Error | null, session: CognitoUserSession | null) => void)) => {   
+      const err: Error | null = new Error();
+      callback.call(null, err, null);
+    })
+    expect(service.isLoggedIn()).toEqual(false);
+  });
+
+  it('should get CognitoUserSession', () => {
+    const cu = new CognitoUser({Username: 'MockUser', Pool: mockUserPool});
+    
+    spyOn(mockUserPool, 'getCurrentUser').and.returnValue(cu);
+    spyOn(cu, 'getSession').and.callFake((callback: ((error: Error | null, session: CognitoUserSession | null) => void)) => {   
+      const cusession = jasmine.createSpyObj('CognitoUserSession', ['isValid']);
+      cusession.isValid.and.returnValue(true);
+      callback.call(null, null, cusession);
+    })
+    expect(service.isLoggedIn()).toEqual(true);
   });
 
 });

@@ -3,6 +3,12 @@
   width: calc(50% - 20px);
   min-width: 525px;
   float: left;
+  height: 90%;
+}
+
+#product-table-container {
+  overflow: auto;
+  height: 100%;
 }
 
 #container2 {
