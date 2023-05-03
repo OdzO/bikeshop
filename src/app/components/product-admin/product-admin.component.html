@@ -92,13 +92,13 @@
   <div>
     <button mat-raised-button (click)="onAddAttribute()">New attribute</button>
   </div>
-  <div *ngFor="let attr of editProduct.attributes | keyvalue" style="width: 275px; float: left">
+  <div *ngFor="let attr of editProduct.attributes" style="width: 275px; float: left">
     <mat-form-field appearance="outline">
       <mat-label>{{ attr.key }}</mat-label>
       <input
         matInput
         placeholder="{{ attr.value }}"
-        value="{{ attr.value }}"
+        [(ngModel)]="attr.value"
         [type]="typeof(attr.value) === 'string' ? 'text' : 'number'"
       />
       <button mat-icon-button matSuffix aria-label="Example icon button with a cancel icon" (click)="onDeleteAttribute(attr.key)">

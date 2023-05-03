@@ -3,7 +3,8 @@ import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-user-page',
-  templateUrl: './user-page.component.html'
+  templateUrl: './user-page.component.html',
+  styleUrls: ['./user-page.component.scss']
 })
 export class UserPageComponent {
   userName: string;

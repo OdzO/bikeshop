@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoUserPool, CognitoUserSession, ICognitoUserData } from 'amazon-cognito-identity-js';
 import { environment } from 'src/environments/environment';
@@ -8,10 +9,10 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
 
-  verification_email = "";
+  verificationEmail = '';
   userPool: CognitoUserPool;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private customerMsg: MatSnackBar) {
     const poolData = {
       UserPoolId: environment.cognitoUserPoolId,
       ClientId: environment.cognitoAppClientId
@@ -37,8 +38,13 @@ export class AuthService {
       onSuccess: () => {
         this.router.navigate(["user-page"]);
       },
-      onFailure: (err) => {
-        alert(err.message || JSON.stringify(err));
+      onFailure: (err: Error) => {
+        if('UserNotConfirmedException' === err.name){
+          this.verificationEmail = email;
+          this.router.navigate(["verification"]);
+        }else{
+          alert(err.message || JSON.stringify(err));
+        }
       },
     });
   }
@@ -59,14 +65,13 @@ export class AuthService {
         alert(err.message || JSON.stringify(err));
       }
       if (result) {
-        this.verification_email = email;
         this.router.navigate(["verification"]);
       }
     });
   }
 
   confirmRegistration(code: string) {
-    const userdata = { Username: this.verification_email, Pool: this.userPool };
+    const userdata = { Username: this.verificationEmail, Pool: this.userPool };
     const cognitoUser = this.getCognitoUser(userdata);
     cognitoUser.confirmRegistration(code, false, (err, result) => {
       if (err) {
@@ -74,6 +79,23 @@ export class AuthService {
       }
       if (result) {
         this.router.navigate(["user-page"]);
+      }
+    });
+  }
+
+  resendVerificationCode() {
+    const userdata = { Username: this.verificationEmail, Pool: this.userPool };
+    const cognitoUser = this.getCognitoUser(userdata);
+    cognitoUser.resendConfirmationCode((err, result) => {
+      if (err) {
+        this.customerMsg.open('Failed to resend verification code: ' + err.message, 'Dismiss', {
+          duration: 2000
+        });
+      }
+      if (result) {
+        this.customerMsg.open('Confirmation code sent to ' + this.verificationEmail, 'Dismiss', {
+          duration: 2000
+        });
       }
     });
   }

@@ -1,18 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Filter } from 'src/app/interfaces/filter';
 import { Product } from 'src/app/interfaces/product';
 import { DynamodbService } from 'src/app/services/dynamodb.service';
+import { FilterService } from 'src/app/services/filter.service';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit {
   menuElements = [];
   products: Product[] = [];
   displayProducts: Product[] = [];
+  orderBy = 'name-asc';
+  filtersHidden = false;
+  toggleButtonValue = '<';
+  type = '';
+  optFilters: Filter[] = [];
+  activeFilters: Filter[] = [];
 
-  constructor(private db: DynamodbService) {
+  constructor(private db: DynamodbService, private router: ActivatedRoute, private filterService: FilterService) {
+    this.filterService.filters.subscribe(filters => {
+        this.activeFilters = filters;
+        console.log(this.activeFilters);
+        this.applyFilters();
+        this.generateOptFilters();
+        this.orderProducts();
+    })
+  }
+
+  ngOnInit(): void {
     this.collectProducts();
   }
 
@@ -20,6 +39,8 @@ export class ProductListComponent {
     this.db.getProducts().subscribe(resp => {
       this.products = resp.Items;
       this.displayProducts = resp.Items;
+      this.displayProducts.sort(this.compareProductsByNameAsc);
+      this.generateOptFilters();
     });
 
     this.db.getShopData().subscribe(resp => {
@@ -27,17 +48,142 @@ export class ProductListComponent {
     });
   }
 
-  showType(type: string) {
-    const reducedArray: Product[] = [];
-    this.products.forEach(element => {
-      if (element.type === type) {
-        reducedArray.push(element);
-      }
-    });
-    this.displayProducts = reducedArray;
+  compareProductsByNameAsc(a: Product, b: Product): number {
+    return a.name.localeCompare(b.name);
   }
 
-  showAll() {
-    this.displayProducts = this.products;
+  compareProductsByNameDesc(a: Product, b: Product): number {
+    return a.name.localeCompare(b.name) * -1;
   }
+
+  compareProductsByPriceAsc(a: Product, b: Product): number {
+    const price_a = a.sale ? a.price - a.price * a.sale / 100 : a.price;
+    const price_b = b.sale ? b.price - b.price * b.sale / 100 : b.price;
+    return price_a > price_b ? 1 : -1;
+  }
+
+  compareProductsByPriceDesc(a: Product, b: Product): number {
+    const price_a = a.sale ? a.price - a.price * a.sale / 100 : a.price;
+    const price_b = b.sale ? b.price - b.price * b.sale / 100 : b.price;
+    return price_b > price_a ? 1 : -1;
+  }
+
+  orderProducts() {
+    switch (this.orderBy) {
+      case 'name-desc':
+        this.displayProducts.sort(this.compareProductsByNameDesc);
+        break;
+
+      case 'price-asc':
+        this.displayProducts.sort(this.compareProductsByPriceAsc);
+        break;
+
+      case 'price-desc':
+        this.displayProducts.sort(this.compareProductsByPriceDesc);
+        break;
+
+      default:
+        this.displayProducts.sort(this.compareProductsByNameAsc);
+        break;
+    }
+  }
+
+  generateOptFilters() {
+    this.optFilters = [];
+    if (this.displayProducts.length > 1) {
+
+      this.displayProducts[0].attributes?.forEach(a => {
+        if (!this.filterExists(this.activeFilters, a.key)) {
+          this.optFilters.push({ name: a.key, values: [a.value], type: '' });
+        }
+      });
+
+      this.displayProducts.slice(1).forEach(p => {
+        const tempAttrs: Filter[] = [];
+        this.optFilters.forEach(sa => {
+          p.attributes?.forEach(pa => {
+            if (pa.key === sa.name) {
+              sa.values?.push(pa.value);
+              tempAttrs.push(sa);
+            }
+          });
+        });
+        this.optFilters = tempAttrs;
+      });
+
+      if (!this.filterExists(this.activeFilters, 'Price')) {
+        const prices: number[] = [];
+        this.displayProducts.forEach(p => {
+          prices.push(p.price);
+        });
+        this.optFilters.push({ name: 'Price', values: prices });
+      }
+
+      if (!this.filterExists(this.activeFilters, 'Type')) {
+        const types: string[] = [];
+        this.displayProducts.forEach(p => {
+          if(!types.includes(p.type)){
+            types.push(p.type);
+          }
+        });
+        this.optFilters.push({ name: 'Type', values: types });
+      }
+    }
+
+    //console.log(this.sameAttrs);
+  }
+
+  hideFilters() {
+    this.filtersHidden = this.filtersHidden ? false : true;
+    this.toggleButtonValue = this.filtersHidden ? '>' : '<';
+  }
+
+  applyFilters() {
+    this.displayProducts = [];
+    this.products.forEach(prod => {
+      let display = true;
+      this.activeFilters.forEach(filter => {
+        if (display) {
+          if (filter.name === 'Type') {
+            display = filter.selected != undefined && filter.selected.includes(prod.type);
+          }
+          else if (filter.name === 'Price' && filter.selectedMin && filter.selectedMax) {
+            display = prod.price >= filter.selectedMin && prod.price <= filter.selectedMax;
+          }
+          else if (filter.type === 'range' && filter.selectedMin && filter.selectedMax) {
+            const pVal = Number(this.getProdAttrVal(prod, filter.name));
+            display = prod.attributes != undefined && pVal >= filter.selectedMin && pVal <= filter.selectedMax;
+          }
+          else if (filter.type === 'multiselect' && filter.selected) {
+            const pVal = String(this.getProdAttrVal(prod, filter.name));
+            display = filter.selected.includes(pVal);
+          }
+        }
+      });
+      if (display) {
+        this.displayProducts.push(prod);
+      }
+    });
+  }
+
+  filterExists(filters: Filter[], filterName: string): boolean {
+    let result = false;
+    filters.forEach(f => {
+      if (f.name === filterName) {
+        result = true;
+      }
+    });
+    return result;
+  }
+
+  getProdAttrVal(prod: Product, attrName: string): string | number {
+    let result: string | number = '';
+    prod.attributes?.forEach(attr => {
+      if(attr.key.toLowerCase() === attrName.toLowerCase()){
+        result = attr.value;
+      }
+    });
+    return result;
+  }
+
 }

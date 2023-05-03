@@ -1,3 +1,5 @@
+import { ProductAttribute } from "./product-attribute";
+
 export interface Product {
     pkey: string,
     name: string,
@@ -8,7 +10,5 @@ export interface Product {
     sale?: number,
     ratingCount?: number,
     ratingSum?: number,
-    attributes?: {
-        [key: string]: string | number
-    }
+    attributes?: ProductAttribute[]
 }

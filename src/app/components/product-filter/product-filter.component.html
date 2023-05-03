@@ -1,0 +1,25 @@
+<div *ngIf="filter.type === 'multiselect'" class="filter" [ngClass]="{ active: isFilterActive() }">
+  <div>
+    <span>{{ filter.name }}</span>
+  </div>
+  <div>
+    <button
+      *ngFor="let v of getStringValues()"
+      mat-flat-button
+      (click)="this.setValue(v)"
+      [color]="this.filter.selected?.includes(v) ? 'primary' : 'none'"
+    >
+      {{ v }}
+    </button>
+  </div>
+</div>
+
+<div *ngIf="filter.type === 'range'" class="filter" [ngClass]="{ active: isFilterActive() }">
+  <div>
+    <span>{{ filter.name }}: {{ filter.selectedMin }} - {{ filter.selectedMax }}</span>
+  </div>
+  <mat-slider [min]="this.filter.rangeMin" [max]="this.filter.rangeMax">
+    <input [(ngModel)]="filter.selectedMin" matSliderStartThumb (dragEnd)="setRange()" />
+    <input [(ngModel)]="filter.selectedMax" matSliderEndThumb (dragEnd)="setRange()" />
+  </mat-slider>
+</div>

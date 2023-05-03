@@ -1,9 +1,9 @@
 <form (submit)="onVerify(verifyForm)" #verifyForm="ngForm">
-  <p>Sent code to this email address: {{ verification_email }}</p>
+  <p>Sent code to this email address on sign up: {{ verification_email }}</p>
   <mat-form-field>
     <mat-label>Verification code</mat-label>
     <input matInput [(ngModel)]="verification_code" type="text" name="verification_code" placeholder="Enter verification code" required />
   </mat-form-field>
-  <mat-divider></mat-divider>
   <button mat-raised-button type="submit">Verify</button>
+  <button mat-raised-button (click)="this.onResendCode()" >Resend code</button>
 </form>

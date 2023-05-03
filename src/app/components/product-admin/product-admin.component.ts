@@ -4,6 +4,7 @@ import { MatTable } from '@angular/material/table';
 import { Product } from 'src/app/interfaces/product';
 import { DynamodbService } from 'src/app/services/dynamodb.service';
 import { DialogNewProductAttributeComponent } from '../dialog-new-product-attribute/dialog-new-product-attribute.component';
+import { ProductAttribute } from 'src/app/interfaces/product-attribute';
 
 @Component({
   selector: 'app-product-admin',
@@ -56,7 +57,7 @@ export class ProductAdminComponent {
 
   onAddProduct() {
     const pkey = new Date().toISOString();
-    const product: Product = { 'pkey': pkey, 'name': 'name', 'type': 'type', 'price': 0 };
+    const product: Product = { 'pkey': pkey, 'name': 'name', 'type': 'type', 'price': 0, 'sale': 0 };
     this.products.push(product);
     this.table.renderRows();
     this.onEdit(pkey);
@@ -68,19 +69,25 @@ export class ProductAdminComponent {
     const dialogRef = this.dialog.open(DialogNewProductAttributeComponent, { data: { attrName: attrName, attrValue: attrValue } });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
       if (this.editProduct && result.attrName && result.attrValue) {
-        if (this.editProduct.attributes != undefined) {
-          this.editProduct.attributes[result.attrName] = result.attrValue;
+        if (this.editProduct.attributes) {
+          console.log('Adding');
+          this.editProduct.attributes.push({key: result.attrName, value: result.attrValue});
         } else {
-          this.editProduct.attributes = { [result.attrName]: result.attrValue };
+          console.log('New');
+          this.editProduct.attributes = [{key: result.attrName, value: result.attrValue}];
         }
       }
+      console.log(this.editProduct);
     });
   }
 
   onDeleteAttribute(attrKey: string){
-    if(this.editProduct && this.editProduct.attributes != undefined)
-    delete this.editProduct.attributes[attrKey];
+      const updatedList: ProductAttribute[] | undefined = this.editProduct?.attributes?.filter(attr => attr.key !== attrKey);
+      if(this.editProduct && this.editProduct.attributes){
+        this.editProduct.attributes = updatedList;
+      }
   }
 
   typeof(value: unknown){

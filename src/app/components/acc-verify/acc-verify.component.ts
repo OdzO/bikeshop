@@ -9,16 +9,22 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class AccVerifyComponent {
 
-  verification_code = "";
-  verification_email = "";
+  verification_code = '';
+  verification_email = '';
 
   constructor(private auth: AuthService) {
-    this.verification_email = auth.verification_email;
+    this.verification_email = auth.verificationEmail;
   }
 
   onVerify(form: NgForm) {
     if (form.valid) {
       this.auth.confirmRegistration(this.verification_code);
+    }
+  }
+
+  onResendCode() {
+    if(this.verification_email){
+      this.auth.resendVerificationCode();
     }
   }
 }
