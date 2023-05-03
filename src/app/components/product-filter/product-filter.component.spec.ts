@@ -14,6 +14,7 @@ describe('ProductFilterComponent', () => {
 
     fixture = TestBed.createComponent(ProductFilterComponent);
     component = fixture.componentInstance;
+    component.filter = {name: 'Type', type: 'multiselect'};
     fixture.detectChanges();
   });
 

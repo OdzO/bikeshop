@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CartService } from './cart.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('CartService', () => {
   let service: CartService;
@@ -10,7 +12,7 @@ describe('CartService', () => {
     price: 999,
     name: 'Trifox X10',
     type: 'frame',
-    attributes: { size: "S", length: 48 },
+    attributes: [{key: 'size', value: 'S'}, {key: 'length', value: 48}],
   }
 
   const mockProduct2 = {
@@ -18,11 +20,14 @@ describe('CartService', () => {
     price: 999,
     name: 'Trifox X10',
     type: 'frame',
-    attributes: { size: "S", length: 48 },
+    attributes: [{key: 'size', value: 'S'}, {key: 'length', value: 48}],
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [BrowserAnimationsModule],
+      providers: [MatSnackBar]
+    });
     service = TestBed.inject(CartService);
   });
 

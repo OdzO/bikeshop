@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CartPageComponent } from './cart-page.component';
 import { MatTableModule } from '@angular/material/table';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 describe('CartPageComponent', () => {
   let component: CartPageComponent;
@@ -10,6 +11,7 @@ describe('CartPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MatTableModule],
+      providers: [MatSnackBar],
       declarations: [CartPageComponent]
     })
       .compileComponents();

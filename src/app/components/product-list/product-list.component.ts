@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Filter } from 'src/app/interfaces/filter';
 import { Product } from 'src/app/interfaces/product';
 import { DynamodbService } from 'src/app/services/dynamodb.service';
@@ -21,7 +20,7 @@ export class ProductListComponent implements OnInit {
   optFilters: Filter[] = [];
   activeFilters: Filter[] = [];
 
-  constructor(private db: DynamodbService, private router: ActivatedRoute, private filterService: FilterService) {
+  constructor(private db: DynamodbService, private filterService: FilterService) {
     this.filterService.filters.subscribe(filters => {
         this.activeFilters = filters;
         console.log(this.activeFilters);
@@ -129,8 +128,6 @@ export class ProductListComponent implements OnInit {
         this.optFilters.push({ name: 'Type', values: types });
       }
     }
-
-    //console.log(this.sameAttrs);
   }
 
   hideFilters() {

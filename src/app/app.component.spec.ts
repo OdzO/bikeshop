@@ -5,6 +5,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatMenuModule } from '@angular/material/menu';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -16,12 +18,14 @@ describe('AppComponent', () => {
         RouterTestingModule,
         MatToolbarModule,
         MatIconModule,
-        MatBadgeModule
+        MatBadgeModule,
+        MatMenuModule
       ],
       declarations: [
         AppComponent,
         HeaderComponent
       ],
+      providers: [MatSnackBar]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);

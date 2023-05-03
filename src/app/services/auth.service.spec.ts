@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoUserPool, CognitoUserSession, IAuthenticationCallback, ISignUpResult, NodeCallback } from 'amazon-cognito-identity-js';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 //This is just a dummy test class for the service
 describe('AuthService', () => {
@@ -15,7 +16,8 @@ describe('AuthService', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes(
         [{ path: 'verification', redirectTo: '' }]
-      )]
+      )],
+      providers: [MatSnackBar]
     });
     
     router = TestBed.inject(Router);
