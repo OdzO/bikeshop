@@ -16,21 +16,10 @@ export class ProductFilterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.filter && this.filter.values) {
+    if (this.filter.values) {
       this.filter.type = typeof this.filter.values[0] === 'string' ? 'multiselect' : 'range';
       if (this.filter.type === 'range') {
-        const numValue = Number(this.filter.values[0]);
-        this.filter.rangeMin = numValue;
-        this.filter.rangeMax = numValue;
-        this.filter.values.forEach(e => {
-          const n = Number(e);
-          if (this.filter.rangeMin && this.filter.rangeMin > n) {
-            this.filter.rangeMin = n;
-          }
-          if (this.filter.rangeMax && this.filter.rangeMax < n) {
-            this.filter.rangeMax = n;
-          }
-        });
+        this.setRangeEnds();
         this.filter.selectedMin = this.filter.selectedMin ? this.filter.selectedMin : this.filter.rangeMin;
         this.filter.selectedMax = this.filter.selectedMax ? this.filter.selectedMax : this.filter.rangeMax;
       } else {
@@ -39,8 +28,27 @@ export class ProductFilterComponent implements OnInit {
     }
   }
 
+  setRangeEnds(): void{
+    if(this.filter.values){
+      const numValue = Number(this.filter.values[0]);
+        let rangeMin = numValue;
+        let rangeMax = numValue;
+        this.filter.values.forEach(e => {
+          const n = Number(e);
+          if (rangeMin > n) {
+            rangeMin = n;
+          }
+          if (rangeMax < n) {
+            rangeMax = n;
+          }
+        });
+        this.filter.rangeMin = rangeMin;
+        this.filter.rangeMax = rangeMax;
+    }
+  }
+
   setValue(value: string) {
-    if (this.filter && this.filter.selected) {
+    if (this.filter.selected) {
       if (this.filter.selected.includes(value)) {
         this.filter.selected = this.filter.selected.filter(v => v != value);
       } else {

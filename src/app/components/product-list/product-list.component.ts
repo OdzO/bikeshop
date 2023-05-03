@@ -141,15 +141,15 @@ export class ProductListComponent implements OnInit {
       let display = true;
       this.activeFilters.forEach(filter => {
         if (display) {
-          if (filter.name === 'Type') {
-            display = filter.selected != undefined && filter.selected.includes(prod.type);
+          if (filter.name === 'Type' && filter.selected?.includes(prod.type)) {
+            display = true;
           }
-          else if (filter.name === 'Price' && filter.selectedMin && filter.selectedMax) {
-            display = prod.price >= filter.selectedMin && prod.price <= filter.selectedMax;
+          else if (filter.name === 'Price') {
+            display = this.isValueInRange(prod.price, filter.selectedMin, filter.selectedMax);
           }
           else if (filter.type === 'range' && filter.selectedMin && filter.selectedMax) {
             const pVal = Number(this.getProdAttrVal(prod, filter.name));
-            display = prod.attributes != undefined && pVal >= filter.selectedMin && pVal <= filter.selectedMax;
+            display = this.isValueInRange(pVal, filter.selectedMin, filter.selectedMax);
           }
           else if (filter.type === 'multiselect' && filter.selected) {
             const pVal = String(this.getProdAttrVal(prod, filter.name));
@@ -161,6 +161,14 @@ export class ProductListComponent implements OnInit {
         this.displayProducts.push(prod);
       }
     });
+  }
+
+  //move to utils
+  isValueInRange(value: number, min: number | undefined, max: number | undefined): boolean{
+    if(min && max){
+      return value >= min && value <= max;
+    }
+    return false;
   }
 
   filterExists(filters: Filter[], filterName: string): boolean {

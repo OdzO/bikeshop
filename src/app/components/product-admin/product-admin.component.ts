@@ -84,9 +84,8 @@ export class ProductAdminComponent {
   }
 
   onDeleteAttribute(attrKey: string){
-      const updatedList: ProductAttribute[] | undefined = this.editProduct?.attributes?.filter(attr => attr.key !== attrKey);
-      if(this.editProduct && this.editProduct.attributes){
-        this.editProduct.attributes = updatedList;
+      if(this.editProduct?.attributes){
+        this.editProduct.attributes = this.editProduct?.attributes?.filter(attr => attr.key !== attrKey);
       }
   }
 

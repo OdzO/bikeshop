@@ -9,7 +9,7 @@
       <mat-icon matBadge="{{ cart.getCartCount() }}" matBadgeColor="accent">shopping_cart</mat-icon>
     </button>
     <mat-menu #smallCart="matMenu">
-      <table id="smallCartTable" *ngIf="cart.getCartCount() > 0" (click)="$event.stopPropagation()">
+      <table id="smallCartTable" *ngIf="cart.getCartCount() > 0" (click)="$event.stopPropagation()" role="presentation" summary="Cart content" >
         <tr *ngFor="let p of cart.getCart()">
           <td>{{ p.name }}</td>
           <td *ngIf="!p.sale">{{ p.price | currency }}</td>

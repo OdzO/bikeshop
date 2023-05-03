@@ -36,12 +36,16 @@ export class AuthService {
     const cognitoUser = this.getCognitoUser(userdata);
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: () => {
-        this.router.navigate(["user-page"]);
+        this.router.navigate(["user-page"]).catch(error => {
+          alert(error.message);
+        });
       },
       onFailure: (err: Error) => {
         if('UserNotConfirmedException' === err.name){
           this.verificationEmail = email;
-          this.router.navigate(["verification"]);
+          this.router.navigate(["verification"]).catch(error => {
+            alert(error.message);
+          });
         }else{
           alert(err.message || JSON.stringify(err));
         }
@@ -52,7 +56,9 @@ export class AuthService {
   signOut(): void {
     const cognitoUser = this.userPool.getCurrentUser();
     cognitoUser?.signOut();
-    this.router.navigate(["login"])
+    this.router.navigate(["login"]).catch(error => {
+      alert(error.message);
+    });
   }
 
   signUp(email: string, password: string, name: string) {
@@ -65,7 +71,9 @@ export class AuthService {
         alert(err.message || JSON.stringify(err));
       }
       if (result) {
-        this.router.navigate(["verification"]);
+        this.router.navigate(["verification"]).catch(error => {
+          alert(error.message);
+        });
       }
     });
   }
@@ -78,7 +86,9 @@ export class AuthService {
         alert(err.message || JSON.stringify(err));
       }
       if (result) {
-        this.router.navigate(["user-page"]);
+        this.router.navigate(["user-page"]).catch(error => {
+          alert(error.message);
+        });
       }
     });
   }
