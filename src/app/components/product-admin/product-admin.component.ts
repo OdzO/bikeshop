@@ -4,7 +4,6 @@ import { MatTable } from '@angular/material/table';
 import { Product } from 'src/app/interfaces/product';
 import { DynamodbService } from 'src/app/services/dynamodb.service';
 import { DialogNewProductAttributeComponent } from '../dialog-new-product-attribute/dialog-new-product-attribute.component';
-import { ProductAttribute } from 'src/app/interfaces/product-attribute';
 
 @Component({
   selector: 'app-product-admin',

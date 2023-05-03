@@ -91,25 +91,8 @@ export class ProductListComponent implements OnInit {
     this.optFilters = [];
     if (this.displayProducts.length > 1) {
 
-      this.displayProducts[0].attributes?.forEach(a => {
-        if (!this.filterExists(this.activeFilters, a.key)) {
-          this.optFilters.push({ name: a.key, values: [a.value], type: '' });
-        }
-      });
-
-      this.displayProducts.slice(1).forEach(p => {
-        const tempAttrs: Filter[] = [];
-        this.optFilters.forEach(sa => {
-          p.attributes?.forEach(pa => {
-            if (pa.key === sa.name) {
-              sa.values?.push(pa.value);
-              tempAttrs.push(sa);
-            }
-          });
-        });
-        this.optFilters = tempAttrs;
-      });
-
+      this.generateAttributeFilters();
+      
       if (!this.filterExists(this.activeFilters, 'Price')) {
         const prices: number[] = [];
         this.displayProducts.forEach(p => {
@@ -128,6 +111,27 @@ export class ProductListComponent implements OnInit {
         this.optFilters.push({ name: 'Type', values: types });
       }
     }
+  }
+
+  private generateAttributeFilters(): void{
+    this.displayProducts[0].attributes?.forEach(a => {
+      if (!this.filterExists(this.activeFilters, a.key)) {
+        this.optFilters.push({ name: a.key, values: [a.value], type: '' });
+      }
+    });
+
+    this.displayProducts.slice(1).forEach(p => {
+      const tempAttrs: Filter[] = [];
+      this.optFilters.forEach(sa => {
+        p.attributes?.forEach(pa => {
+          if (pa.key === sa.name) {
+            sa.values?.push(pa.value);
+            tempAttrs.push(sa);
+          }
+        });
+      });
+      this.optFilters = tempAttrs;
+    });
   }
 
   hideFilters() {

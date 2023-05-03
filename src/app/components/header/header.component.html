@@ -9,22 +9,20 @@
       <mat-icon matBadge="{{ cart.getCartCount() }}" matBadgeColor="accent">shopping_cart</mat-icon>
     </button>
     <mat-menu #smallCart="matMenu">
-      <table id="smallCartTable" *ngIf="cart.getCartCount() > 0" (click)="$event.stopPropagation()" role="presentation" summary="Cart content" >
-        <tr *ngFor="let p of cart.getCart()">
-          <td>{{ p.name }}</td>
-          <td *ngIf="!p.sale">{{ p.price | currency }}</td>
-          <td *ngIf="p.sale">{{ p.price | sale : p.sale | currency }}</td>
-          <td>
-            <button mat-icon-button aria-label="Example icon button with a cancel icon" (click)="cart.removeFromCart(p)">
-              <mat-icon>cancel</mat-icon>
-            </button>
-          </td>
-        </tr>
-        <tfoot>
-          <td>Summary:</td>
-          <td>{{ cart.getCartTotal() | currency }}</td>
-        </tfoot>
-      </table>
+      <div class="smallCartTable" *ngIf="cart.getCartCount() > 0" (click)="$event.stopPropagation()">
+        <div *ngFor="let p of cart.getCart()">
+          <div>{{ p.name }}</div>
+          <div *ngIf="!p.sale">{{ p.price | currency }}</div>
+          <div *ngIf="p.sale">{{ p.price | sale : p.sale | currency }}</div>
+          <button mat-icon-button aria-label="Example icon button with a cancel icon" (click)="cart.removeFromCart(p)">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
+        <div>
+          <div><strong>Summary:</strong></div>
+          <div>{{ cart.getCartTotal() | currency }}</div>
+        </div>
+      </div>
       <div id="smallCartButton" *ngIf="cart.getCartCount() > 0">
         <a mat-raised-button routerLink="/cart" routerLinkActive="active" ariaCurrentWhenActive="page" color="accent">
           <span>Continue purchase</span>
