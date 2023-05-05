@@ -51,7 +51,7 @@ describe('AuthService', () => {
     expect(router.navigate).toHaveBeenCalledWith(['user-page']);
   });
 
-  /*it('should sign in but navigate error', () => {
+  it('should sign in but navigate error', () => {
     spyOn(router, 'navigate').and.returnValue(Promise.reject(Error('Navigate error')));
     const cu = new CognitoUser({Username: 'MockUser', Pool: mockUserPool});
     spyOn<any>(service, 'getCognitoUser').and.returnValue(cu);
@@ -63,7 +63,7 @@ describe('AuthService', () => {
     service.signIn('email','password');
     expect(cu.authenticateUser).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['user-page']);
-  });*/
+  });
 
   it('should fail sign in with UserNotConfirmedException', () => {
     const cu = new CognitoUser({Username: 'MockUser', Pool: mockUserPool});

@@ -36,7 +36,9 @@ export class AuthService {
     const cognitoUser = this.getCognitoUser(userdata);
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: () => {
-        this.router.navigate(["user-page"]);
+        this.router.navigate(["user-page"]).catch(error => {
+          alert(error.message);
+        });
       },
       onFailure: (err: Error) => {
         if ('UserNotConfirmedException' === err.name) {
