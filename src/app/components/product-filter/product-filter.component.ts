@@ -52,7 +52,7 @@ export class ProductFilterComponent implements OnInit {
       if (this.filter.selected.includes(value)) {
         this.filter.selected = this.filter.selected.filter(v => v != value);
       } else {
-        this.filter.selected.push(value);
+        this.filter.selected.push(value.toLowerCase());
 
       }
       this.filterService.changeFilter(this.filter);

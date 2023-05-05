@@ -68,17 +68,13 @@ export class ProductAdminComponent {
     const dialogRef = this.dialog.open(DialogNewProductAttributeComponent, { data: { attrName: attrName, attrValue: attrValue } });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
       if (this.editProduct && result.attrName && result.attrValue) {
         if (this.editProduct.attributes) {
-          console.log('Adding');
           this.editProduct.attributes.push({key: result.attrName, value: result.attrValue});
         } else {
-          console.log('New');
           this.editProduct.attributes = [{key: result.attrName, value: result.attrValue}];
         }
       }
-      console.log(this.editProduct);
     });
   }
 

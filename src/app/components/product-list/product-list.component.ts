@@ -16,14 +16,12 @@ export class ProductListComponent implements OnInit {
   orderBy = 'name-asc';
   filtersHidden = false;
   toggleButtonValue = '<';
-  type = '';
   optFilters: Filter[] = [];
   activeFilters: Filter[] = [];
 
   constructor(private db: DynamodbService, private filterService: FilterService) {
-    this.filterService.filters.subscribe(filters => {
+    this.filterService.getFilters().subscribe(filters => {
         this.activeFilters = filters;
-        console.log(this.activeFilters);
         this.applyFilters();
         this.generateOptFilters();
         this.orderProducts();
@@ -93,7 +91,7 @@ export class ProductListComponent implements OnInit {
 
       this.generateAttributeFilters();
       
-      if (!this.filterExists(this.activeFilters, 'Price')) {
+      if (!this.isActiveFilter('Price')) {
         const prices: number[] = [];
         this.displayProducts.forEach(p => {
           prices.push(p.price);
@@ -101,7 +99,7 @@ export class ProductListComponent implements OnInit {
         this.optFilters.push({ name: 'Price', values: prices });
       }
 
-      if (!this.filterExists(this.activeFilters, 'Type')) {
+      if (!this.isActiveFilter('Type')) {
         const types: string[] = [];
         this.displayProducts.forEach(p => {
           if(!types.includes(p.type)){
@@ -115,7 +113,7 @@ export class ProductListComponent implements OnInit {
 
   private generateAttributeFilters(): void{
     this.displayProducts[0].attributes?.forEach(a => {
-      if (!this.filterExists(this.activeFilters, a.key)) {
+      if (!this.isActiveFilter(a.key)) {
         this.optFilters.push({ name: a.key, values: [a.value], type: '' });
       }
     });
@@ -145,19 +143,19 @@ export class ProductListComponent implements OnInit {
       let display = true;
       this.activeFilters.forEach(filter => {
         if (display) {
-          if (filter.name === 'Type' && filter.selected?.includes(prod.type)) {
+          if (filter.name === 'Type' && filter.selected?.includes(prod.type.toLowerCase())) {
             display = true;
           }
           else if (filter.name === 'Price') {
             display = this.isValueInRange(prod.price, filter.selectedMin, filter.selectedMax);
           }
-          else if (filter.type === 'range' && filter.selectedMin && filter.selectedMax) {
+          else if (filter.type === 'range') {
             const pVal = Number(this.getProdAttrVal(prod, filter.name));
             display = this.isValueInRange(pVal, filter.selectedMin, filter.selectedMax);
           }
           else if (filter.type === 'multiselect' && filter.selected) {
             const pVal = String(this.getProdAttrVal(prod, filter.name));
-            display = filter.selected.includes(pVal);
+            display = filter.selected.includes(pVal.toLowerCase());
           }
         }
       });
@@ -175,9 +173,9 @@ export class ProductListComponent implements OnInit {
     return false;
   }
 
-  filterExists(filters: Filter[], filterName: string): boolean {
+  isActiveFilter(filterName: string): boolean {
     let result = false;
-    filters.forEach(f => {
+    this.activeFilters.forEach(f => {
       if (f.name === filterName) {
         result = true;
       }

@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProductCardComponent } from './product-card.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { TestObjects } from 'src/app/misc/test-objects';
+import { TestObjects } from 'src/app/misc/TestObjects';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 

@@ -16,7 +16,7 @@ describe('AccVerifyComponent', () => {
   const form = new NgForm([],[]);
 
   beforeEach(async () => {
-    const spy = jasmine.createSpyObj('AuthService', ['confirmRegistration']);
+    const spy = jasmine.createSpyObj('AuthService', ['confirmRegistration','resendVerificationCode']);
 
     await TestBed.configureTestingModule({
       imports: [FormsModule, MatFormFieldModule, MatDividerModule, MatInputModule, BrowserAnimationsModule],
@@ -39,5 +39,11 @@ describe('AccVerifyComponent', () => {
   it('should call confirm registration in auth service if form is valid', () => {
     component.onVerify(form);
     expect(authServiceSpy.confirmRegistration).toHaveBeenCalled();
+  });
+
+  it('should resend code', () => {
+    component.verification_email = 'test@mail.com';
+    component.onResendCode();
+    expect(authServiceSpy.resendVerificationCode).toHaveBeenCalled();
   });
 });

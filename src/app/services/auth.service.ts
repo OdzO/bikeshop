@@ -36,17 +36,15 @@ export class AuthService {
     const cognitoUser = this.getCognitoUser(userdata);
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: () => {
-        this.router.navigate(["user-page"]).catch(error => {
-          alert(error.message);
-        });
+        this.router.navigate(["user-page"]);
       },
       onFailure: (err: Error) => {
-        if('UserNotConfirmedException' === err.name){
+        if ('UserNotConfirmedException' === err.name) {
           this.verificationEmail = email;
           this.router.navigate(["verification"]).catch(error => {
             alert(error.message);
           });
-        }else{
+        } else {
           alert(err.message || JSON.stringify(err));
         }
       },
@@ -143,7 +141,7 @@ export class AuthService {
     const session: CognitoUserSession | null = this.getCognitoUserSession();
     if (session) {
       const groups: Array<string> = session.getAccessToken().payload['cognito:groups'];
-      if(groups){
+      if (groups) {
         admin = groups.findIndex(x => x.valueOf() === environment.cognitoAdminGroupName) != -1;
       }
     }

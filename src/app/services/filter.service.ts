@@ -18,5 +18,9 @@ export class FilterService {
     }
     this.filters.next(this.filtersValue);
   }
+
+  getFilters(): Subject<Filter[]>{
+    return this.filters;
+  }
   
 }
