@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoUserPool, CognitoUserSession, ICognitoUserData } from 'amazon-cognito-identity-js';
 import { environment } from 'src/environments/environment';
@@ -8,10 +9,10 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
 
-  verification_email = "";
+  verificationEmail = '';
   userPool: CognitoUserPool;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private customerMsg: MatSnackBar) {
     const poolData = {
       UserPoolId: environment.cognitoUserPoolId,
       ClientId: environment.cognitoAppClientId
@@ -35,10 +36,19 @@ export class AuthService {
     const cognitoUser = this.getCognitoUser(userdata);
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: () => {
-        this.router.navigate(["user-page"]);
+        this.router.navigate(["user-page"]).catch(error => {
+          alert(error.message);
+        });
       },
-      onFailure: (err) => {
-        alert(err.message || JSON.stringify(err));
+      onFailure: (err: Error) => {
+        if ('UserNotConfirmedException' === err.name) {
+          this.verificationEmail = email;
+          this.router.navigate(["verification"]).catch(error => {
+            alert(error.message);
+          });
+        } else {
+          alert(err.message || JSON.stringify(err));
+        }
       },
     });
   }
@@ -46,7 +56,9 @@ export class AuthService {
   signOut(): void {
     const cognitoUser = this.userPool.getCurrentUser();
     cognitoUser?.signOut();
-    this.router.navigate(["login"])
+    this.router.navigate(["login"]).catch(error => {
+      alert(error.message);
+    });
   }
 
   signUp(email: string, password: string, name: string) {
@@ -59,21 +71,41 @@ export class AuthService {
         alert(err.message || JSON.stringify(err));
       }
       if (result) {
-        this.verification_email = email;
-        this.router.navigate(["verification"]);
+        this.router.navigate(["verification"]).catch(error => {
+          alert(error.message);
+        });
       }
     });
   }
 
   confirmRegistration(code: string) {
-    const userdata = { Username: this.verification_email, Pool: this.userPool };
+    const userdata = { Username: this.verificationEmail, Pool: this.userPool };
     const cognitoUser = this.getCognitoUser(userdata);
     cognitoUser.confirmRegistration(code, false, (err, result) => {
       if (err) {
         alert(err.message || JSON.stringify(err));
       }
       if (result) {
-        this.router.navigate(["user-page"]);
+        this.router.navigate(["user-page"]).catch(error => {
+          alert(error.message);
+        });
+      }
+    });
+  }
+
+  resendVerificationCode() {
+    const userdata = { Username: this.verificationEmail, Pool: this.userPool };
+    const cognitoUser = this.getCognitoUser(userdata);
+    cognitoUser.resendConfirmationCode((err, result) => {
+      if (err) {
+        this.customerMsg.open('Failed to resend verification code: ' + err.message, 'Dismiss', {
+          duration: 2000
+        });
+      }
+      if (result) {
+        this.customerMsg.open('Confirmation code sent to ' + this.verificationEmail, 'Dismiss', {
+          duration: 2000
+        });
       }
     });
   }
@@ -111,7 +143,7 @@ export class AuthService {
     const session: CognitoUserSession | null = this.getCognitoUserSession();
     if (session) {
       const groups: Array<string> = session.getAccessToken().payload['cognito:groups'];
-      if(groups){
+      if (groups) {
         admin = groups.findIndex(x => x.valueOf() === environment.cognitoAdminGroupName) != -1;
       }
     }

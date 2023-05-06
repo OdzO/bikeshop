@@ -1,12 +1,20 @@
-<mat-drawer-container class="container">
-  <mat-drawer #drawer class="sidenav" mode="side" opened="true">
-    <mat-button-toggle-group name="fontStyle" aria-label="Font Style" vertical="true">
-      <mat-button-toggle mat-stroked-button color="primary" (click)="this.showAll()">All</mat-button-toggle>
-      <mat-button-toggle *ngFor="let e of menuElements" mat-stroked-button color="primary" (click)="this.showType(e)">{{e}}</mat-button-toggle>
-    </mat-button-toggle-group>
-  </mat-drawer>
-
-  <div class="sidenav-content">
+<div id="filters" [ngClass]="{'noDisplay': this.filtersHidden}">
+  <app-product-filter *ngFor="let filter of activeFilters" [filter]="filter"></app-product-filter>
+  <app-product-filter *ngFor="let filter of optFilters" [filter]="filter"></app-product-filter>
+</div>
+<div id="filtersToggle">
+  <button id="filtersToggleButton" (click)="hideFilters()">{{toggleButtonValue}}</button>
+</div>
+<div id="contents" [ngClass]="{'contentsBig': this.filtersHidden}">
+  <div id="orderBy">
+    <mat-select style="width: 120px;" [(value)]="orderBy" (valueChange)="orderProducts()">
+      <mat-option value="name-asc" >Name asc</mat-option>
+      <mat-option value="name-desc" >Name desc</mat-option>
+      <mat-option value="price-asc" >Price asc</mat-option>
+      <mat-option value="price-desc" >Price desc</mat-option>
+    </mat-select>
+  </div>
+  <div id="productsGrid">
     <app-product-card *ngFor="let p of displayProducts" [product]="p"></app-product-card>
   </div>
-</mat-drawer-container>
+</div>

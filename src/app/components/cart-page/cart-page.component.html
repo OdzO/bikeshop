@@ -9,7 +9,10 @@
 
     <ng-container matColumnDef="price">
       <th mat-header-cell *matHeaderCellDef id="col-1">Price</th>
-      <td mat-cell *matCellDef="let prod">{{ prod.price | currency }}</td>
+      <td mat-cell *matCellDef="let prod">
+        <span *ngIf="!prod.sale">{{ prod.price | currency }}</span>
+        <span *ngIf="prod.sale">{{ prod.price | sale: prod.sale | currency }}</span>
+      </td>
       <td mat-footer-cell *matFooterCellDef>{{ cart.getCartTotal() | currency }}</td>
     </ng-container>
 

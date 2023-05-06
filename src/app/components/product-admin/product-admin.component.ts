@@ -56,7 +56,7 @@ export class ProductAdminComponent {
 
   onAddProduct() {
     const pkey = new Date().toISOString();
-    const product: Product = { 'pkey': pkey, 'name': 'name', 'type': 'type', 'price': 0 };
+    const product: Product = { 'pkey': pkey, 'name': 'name', 'type': 'type', 'price': 0, 'sale': 0 };
     this.products.push(product);
     this.table.renderRows();
     this.onEdit(pkey);
@@ -69,18 +69,19 @@ export class ProductAdminComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (this.editProduct && result.attrName && result.attrValue) {
-        if (this.editProduct.attributes != undefined) {
-          this.editProduct.attributes[result.attrName] = result.attrValue;
+        if (this.editProduct.attributes) {
+          this.editProduct.attributes.push({key: result.attrName, value: result.attrValue});
         } else {
-          this.editProduct.attributes = { [result.attrName]: result.attrValue };
+          this.editProduct.attributes = [{key: result.attrName, value: result.attrValue}];
         }
       }
     });
   }
 
   onDeleteAttribute(attrKey: string){
-    if(this.editProduct && this.editProduct.attributes != undefined)
-    delete this.editProduct.attributes[attrKey];
+      if(this.editProduct?.attributes){
+        this.editProduct.attributes = this.editProduct?.attributes?.filter(attr => attr.key !== attrKey);
+      }
   }
 
   typeof(value: unknown){

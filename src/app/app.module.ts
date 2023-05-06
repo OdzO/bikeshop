@@ -29,8 +29,12 @@ import { MatTableModule } from '@angular/material/table';
 import { DialogNewProductAttributeComponent } from './components/dialog-new-product-attribute/dialog-new-product-attribute.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CartPageComponent } from './components/cart-page/cart-page.component';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { SalePipe } from './pipes/sale.pipe';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatMenuModule } from '@angular/material/menu';
+import { ProductFilterComponent } from './components/product-filter/product-filter.component';
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -44,7 +48,8 @@ import { SalePipe } from './pipes/sale.pipe';
     ProductAdminComponent,
     DialogNewProductAttributeComponent,
     CartPageComponent,
-    SalePipe
+    SalePipe,
+    ProductFilterComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +71,10 @@ import { SalePipe } from './pipes/sale.pipe';
     MatTableModule,
     MatDialogModule,
     ReactiveFormsModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatSnackBarModule,
+    MatMenuModule,
+    MatSliderModule
   ],
   providers: [],
   bootstrap: [AppComponent],
