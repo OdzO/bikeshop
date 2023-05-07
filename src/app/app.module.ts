@@ -1,16 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -20,8 +18,6 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
 import { UserPageComponent } from './components/user-page/user-page.component';
-import { LoginComponent } from './components/login/login.component';
-import { MatTabsModule } from '@angular/material/tabs';
 import { AccVerifyComponent } from './components/acc-verify/acc-verify.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ProductAdminComponent } from './components/product-admin/product-admin.component';
@@ -29,12 +25,13 @@ import { MatTableModule } from '@angular/material/table';
 import { DialogNewProductAttributeComponent } from './components/dialog-new-product-attribute/dialog-new-product-attribute.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CartPageComponent } from './components/cart-page/cart-page.component';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { SalePipe } from './pipes/sale.pipe';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu';
 import { ProductFilterComponent } from './components/product-filter/product-filter.component';
-import {MatSliderModule} from '@angular/material/slider';
+import { MatSliderModule } from '@angular/material/slider';
+
+
 
 @NgModule({
   declarations: [
@@ -42,36 +39,31 @@ import {MatSliderModule} from '@angular/material/slider';
     ProductCardComponent,
     ProductListComponent,
     UserPageComponent,
-    LoginComponent,
     AccVerifyComponent,
     HeaderComponent,
     ProductAdminComponent,
     DialogNewProductAttributeComponent,
     CartPageComponent,
-    SalePipe,
-    ProductFilterComponent
+    ProductFilterComponent,
+    SalePipe
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
-    MatSidenavModule,
     MatIconModule,
     MatButtonModule,
     MatToolbarModule,
     MatCardModule,
-    MatDividerModule,
     HttpClientModule,
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
     FormsModule,
     MatBadgeModule,
-    MatTabsModule,
     MatTableModule,
     MatDialogModule,
     ReactiveFormsModule,
-    MatButtonToggleModule,
     MatSnackBarModule,
     MatMenuModule,
     MatSliderModule

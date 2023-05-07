@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AccVerifyComponent } from './components/acc-verify/acc-verify.component';
-import { LoginComponent } from './components/login/login.component';
 import { ProductAdminComponent } from './components/product-admin/product-admin.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { UserPageComponent } from './components/user-page/user-page.component';
@@ -14,7 +13,7 @@ import { UserGuard } from './guards/user.guard';
 const routes: Routes = [
   { path: '', component: ProductListComponent },
   { path: 'product-list', component: ProductListComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', loadChildren: () => import('./components/login/login.module').then(m => m.LoginModule) },
   { path: 'verification', component: AccVerifyComponent },
   { path: 'cart', component: CartPageComponent },
   { path: 'admin', component: ProductAdminComponent, canActivate: [AdminGuard] },
