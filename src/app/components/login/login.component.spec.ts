@@ -45,24 +45,6 @@ describe('LoginComponent', () => {
     expect(authServiceSpy.signIn).toHaveBeenCalled();
   });
 
-  it('dummy - clear validators to check impossible scenario but have full branch coverage', () => {
-    component.loginForm.controls.email.clearValidators();
-    component.loginForm.controls.email.updateValueAndValidity();
-    component.loginForm.controls.password.clearValidators();
-    component.loginForm.controls.password.updateValueAndValidity();
-    component.onSignIn();
-    expect(authServiceSpy.signIn).toHaveBeenCalled();
-  });
-
-  it('dummy - clear validators to check impossible scenario but have full branch coverage', () => {
-    component.loginForm.controls.email.clearValidators();
-    component.loginForm.controls.email.updateValueAndValidity();
-    component.loginForm.controls.password.clearValidators();
-    component.loginForm.controls.password.updateValueAndValidity();
-    component.onSignUp();
-    expect(authServiceSpy.signUp).toHaveBeenCalled();
-  });
-
   it('should call auth service on sign up if form valid', () => {
     component.loginForm.controls.email.setValue('mock@email.com');
     component.loginForm.controls.password.setValue('mockPA$$word123');

@@ -12,7 +12,9 @@ export class AdminGuard implements CanActivate {
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const isAdmin = this.authService.isUserAdmin();
     if (!isAdmin) {
-      this.router.navigate(['login'])
+      this.router.navigate(['login']).catch(error => {
+        alert(error);
+      });
     }
     return isAdmin;
   }

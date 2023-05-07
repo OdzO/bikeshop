@@ -17,14 +17,14 @@ export class LoginComponent {
   constructor(private auth: AuthService) { }
 
   onSignIn() {
-    if (this.loginForm.valid) {
-      this.auth.signIn(this.loginForm.controls.email.value || '', this.loginForm.controls.password.value || '');
+    if (this.loginForm.valid && this.loginForm.controls.email.value && this.loginForm.controls.password.value) {
+      this.auth.signIn(this.loginForm.controls.email.value, this.loginForm.controls.password.value);
     }
   }
 
   onSignUp() {
-    if (this.loginForm.valid) {
-      this.auth.signUp(this.loginForm.controls.email.value || '', this.loginForm.controls.password.value || '', this.loginForm.controls.name.value || 'Customer');
+    if (this.loginForm.valid && this.loginForm.controls.email.value && this.loginForm.controls.password.value) {
+      this.auth.signUp(this.loginForm.controls.email.value, this.loginForm.controls.password.value, this.loginForm.controls.name.value ?? '');
     }
   }
 

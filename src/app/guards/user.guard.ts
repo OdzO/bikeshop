@@ -12,7 +12,9 @@ export class UserGuard implements CanActivate {
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const isAuth = this.authService.isLoggedIn();
     if (!isAuth) {
-      this.router.navigate(['login'])
+      this.router.navigate(['login']).catch(error => {
+        alert(error);
+      });
     }
     return isAuth;
   }
