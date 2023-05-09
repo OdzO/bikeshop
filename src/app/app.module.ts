@@ -8,65 +8,36 @@ import { AppComponent } from './app.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatCardModule } from '@angular/material/card';
-import { ProductCardComponent } from './components/product-card/product-card.component';
-import { ProductListComponent } from './components/product-list/product-list.component';
 import { HttpClientModule } from '@angular/common/http';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
 import { UserPageComponent } from './components/user-page/user-page.component';
-import { AccVerifyComponent } from './components/acc-verify/acc-verify.component';
 import { HeaderComponent } from './components/header/header.component';
-import { ProductAdminComponent } from './components/product-admin/product-admin.component';
-import { MatTableModule } from '@angular/material/table';
-import { DialogNewProductAttributeComponent } from './components/dialog-new-product-attribute/dialog-new-product-attribute.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { CartPageComponent } from './components/cart-page/cart-page.component';
 import { SalePipe } from './pipes/sale.pipe';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu';
-import { ProductFilterComponent } from './components/product-filter/product-filter.component';
-import { MatSliderModule } from '@angular/material/slider';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProductCardComponent,
-    ProductListComponent,
     UserPageComponent,
-    AccVerifyComponent,
     HeaderComponent,
-    ProductAdminComponent,
-    DialogNewProductAttributeComponent,
-    CartPageComponent,
-    ProductFilterComponent,
-    SalePipe
   ],
   imports: [
     BrowserModule,
     CommonModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
+    HttpClientModule,
     MatIconModule,
     MatButtonModule,
     MatToolbarModule,
-    MatCardModule,
-    HttpClientModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    FormsModule,
     MatBadgeModule,
-    MatTableModule,
-    MatDialogModule,
-    ReactiveFormsModule,
     MatSnackBarModule,
     MatMenuModule,
-    MatSliderModule
+    SalePipe
   ],
   providers: [],
   bootstrap: [AppComponent],
