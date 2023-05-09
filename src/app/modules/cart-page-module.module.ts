@@ -6,6 +6,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { SalePipe } from 'src/app/pipes/sale.pipe';
 import { Routes, RouterModule } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
     CommonModule,
     MatTableModule,
     MatIconModule,
+    MatButtonModule,
     SalePipe
   ],
   exports: [RouterModule]
