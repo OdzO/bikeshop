@@ -1,0 +1,21 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { CartPageModuleRoutingModule } from './cart-page-module-routing.module';
+import { CartPageComponent } from 'src/app/components/cart-page/cart-page.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { SalePipe } from 'src/app/pipes/sale.pipe';
+
+
+@NgModule({
+  declarations: [CartPageComponent],
+  imports: [
+    CommonModule,
+    CartPageModuleRoutingModule,
+    MatTableModule,
+    MatIconModule,
+    SalePipe
+  ]
+})
+export class CartPageModuleModule { }
