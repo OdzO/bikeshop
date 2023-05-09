@@ -14,9 +14,13 @@ export class HeaderComponent {
 
   onUserIcon() {
     if (this.auth.isLoggedIn()) {
-      this.router.navigate(['user-page']);
+      this.router.navigate(['user-page']).catch(error => {
+        alert(error);
+      });
     } else {
-      this.router.navigate(['login']);
+      this.router.navigate(['login']).catch(error => {
+        alert(error);
+      });
     }
   }
 }
