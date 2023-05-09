@@ -7,12 +7,12 @@ import { AdminGuard } from './guards/admin.guard';
 import { UserGuard } from './guards/user.guard';
 
 const routes: Routes = [
-  { path: '', loadChildren: () => import('./modules/product-list-module/product-list-module.module').then(m => m.ProductListModuleModule) },
-  { path: 'product-list', loadChildren: () => import('./modules/product-list-module/product-list-module.module').then(m => m.ProductListModuleModule) },
-  { path: 'login', loadChildren: () => import('./modules/login-module/login.module').then(m => m.LoginModule) },
-  { path: 'verification', loadChildren: () => import('./modules/verification-module/verification-module.module').then(m => m.VerificationModuleModule) },
-  { path: 'cart', loadChildren: () => import('./modules/cart-page-module/cart-page-module.module').then(m => m.CartPageModuleModule) },
-  { path: 'admin', loadChildren: () => import('./modules/product-admin-module/product-admin-module.module').then(m => m.ProductAdminModuleModule), canActivate: [AdminGuard] },
+  { path: '', loadChildren: () => import('./modules/product-list-module.module').then(m => m.ProductListModuleModule) },
+  { path: 'product-list', loadChildren: () => import('./modules/product-list-module.module').then(m => m.ProductListModuleModule) },
+  { path: 'login', loadChildren: () => import('./modules/login.module').then(m => m.LoginModule) },
+  { path: 'verification', loadChildren: () => import('./modules/verification-module.module').then(m => m.VerificationModuleModule) },
+  { path: 'cart', loadChildren: () => import('./modules/cart-page-module.module').then(m => m.CartPageModuleModule) },
+  { path: 'admin', loadChildren: () => import('./modules/product-admin-module.module').then(m => m.ProductAdminModuleModule), canActivate: [AdminGuard] },
   { path: 'user-page', component: UserPageComponent, canActivate: [UserGuard] },
 ];
 

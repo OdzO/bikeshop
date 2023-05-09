@@ -5,7 +5,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DynamodbService } from 'src/app/services/dynamodb.service';
-import { Subject, of } from 'rxjs';
+import { of } from 'rxjs';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,7 +18,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { FilterService } from 'src/app/services/filter.service';
-import { Filter } from 'src/app/interfaces/filter';
 import { SalePipe } from 'src/app/pipes/sale.pipe';
 
 describe('ProductListComponent', () => {
@@ -55,8 +54,8 @@ describe('ProductListComponent', () => {
     const spy2 = jasmine.createSpyObj('FilterService', ['getFilters']);
 
     await TestBed.configureTestingModule({
-      imports: [MatSidenavModule, MatCardModule, MatIconModule, MatButtonToggleModule, MatSelectModule, MatButtonModule, MatSliderModule, BrowserAnimationsModule, FormsModule],
-      declarations: [ProductListComponent, ProductCardComponent, ProductFilterComponent, SalePipe],
+      imports: [MatSidenavModule, MatCardModule, MatIconModule, MatButtonToggleModule, MatSelectModule, MatButtonModule, MatSliderModule, BrowserAnimationsModule, FormsModule, SalePipe],
+      declarations: [ProductListComponent, ProductCardComponent, ProductFilterComponent],
       providers: [HttpClient, HttpHandler, MatSnackBar, { provide: DynamodbService, useValue: spy }, { provide: FilterService, useValue: spy2 }],
     }).compileComponents();
 
