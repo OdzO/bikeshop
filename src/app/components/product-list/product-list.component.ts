@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Filter } from 'src/app/interfaces/filter';
 import { Product } from 'src/app/interfaces/product';
 import { DynamodbService } from 'src/app/services/dynamodb.service';
@@ -9,8 +10,9 @@ import { FilterService } from 'src/app/services/filter.service';
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
 })
-export class ProductListComponent implements OnInit {
-  menuElements = [];
+export class ProductListComponent implements OnInit{
+  type: string | null = null;
+
   products: Product[] = [];
   displayProducts: Product[] = [];
   orderBy = 'name-asc';
@@ -19,30 +21,36 @@ export class ProductListComponent implements OnInit {
   optFilters: Filter[] = [];
   activeFilters: Filter[] = [];
 
-  constructor(private db: DynamodbService, private filterService: FilterService) {
-    this.filterService.getFilters().subscribe(filters => {
-        this.activeFilters = filters;
-        this.applyFilters();
-        this.generateOptFilters();
-        this.orderProducts();
-    })
-  }
+  constructor(private route: ActivatedRoute, private db: DynamodbService, private filterService: FilterService) {}
 
   ngOnInit(): void {
-    this.collectProducts();
+    this.filterService.getFilters().subscribe(filters => {
+      this.activeFilters = filters;
+      this.collectProducts();
+    });
+
+    this.route.paramMap.subscribe(params => {
+      console.log(params);
+      this.type = params.get('type');
+      if (this.type) {
+        this.filterService.changeFilter({ name: 'Type', values: [this.type], selected: [this.type], generate: false });
+      }
+    });
+    
+    this.db.getProducts().subscribe(resp => {
+      this.products = resp.Items;
+      this.collectProducts();
+    });
   }
 
   private collectProducts() {
-    this.db.getProducts().subscribe(resp => {
-      this.products = resp.Items;
-      this.displayProducts = resp.Items;
-      this.displayProducts.sort(this.compareProductsByNameAsc);
+    if(this.products.length > 0){   
+      this.applyFilters();
       this.generateOptFilters();
-    });
-
-    this.db.getShopData().subscribe(resp => {
-      this.menuElements = resp.Items[resp.Items.findIndex(x => x.key === 'ProductTypes')].value;
-    });
+      this.orderProducts();
+      
+    }
+    
   }
 
   compareProductsByNameAsc(a: Product, b: Product): number {
@@ -87,34 +95,36 @@ export class ProductListComponent implements OnInit {
 
   generateOptFilters() {
     this.optFilters = [];
+
     if (this.displayProducts.length > 1) {
 
       this.generateAttributeFilters();
-      
+
+      if (!this.isActiveFilter('Type')) {
+        const types: string[] = [];
+        this.displayProducts.forEach(p => {
+          if (!types.includes(p.type)) {
+            types.push(p.type);
+          }
+        });
+        this.optFilters.push({ name: 'Type', generate: true, values: types });
+      }
+
       if (!this.isActiveFilter('Price')) {
         const prices: number[] = [];
         this.displayProducts.forEach(p => {
           prices.push(p.price);
         });
-        this.optFilters.push({ name: 'Price', values: prices });
+        this.optFilters.push({ name: 'Price', generate: true, values: prices });
       }
 
-      if (!this.isActiveFilter('Type')) {
-        const types: string[] = [];
-        this.displayProducts.forEach(p => {
-          if(!types.includes(p.type)){
-            types.push(p.type);
-          }
-        });
-        this.optFilters.push({ name: 'Type', values: types });
-      }
     }
   }
 
-  private generateAttributeFilters(): void{
+  private generateAttributeFilters(): void {
     this.displayProducts[0].attributes?.forEach(a => {
       if (!this.isActiveFilter(a.key)) {
-        this.optFilters.push({ name: a.key, values: [a.value], type: '' });
+        this.optFilters.push({ name: a.key, generate: true, values: [a.value], type: '' });
       }
     });
 
@@ -141,10 +151,11 @@ export class ProductListComponent implements OnInit {
     this.displayProducts = [];
     this.products.forEach(prod => {
       let display = true;
+      
       this.activeFilters.forEach(filter => {
         if (display) {
-          if (filter.name === 'Type' && filter.selected?.includes(prod.type.toLowerCase())) {
-            display = true;
+          if (filter.name === 'Type' && filter.selected) {
+            display = filter.selected.includes(prod.type.toLowerCase());
           }
           else if (filter.name === 'Price') {
             display = this.isValueInRange(prod.price, filter.selectedMin, filter.selectedMax);
@@ -166,8 +177,8 @@ export class ProductListComponent implements OnInit {
   }
 
   //move to utils
-  isValueInRange(value: number, min: number | undefined, max: number | undefined): boolean{
-    if(min && max){
+  isValueInRange(value: number, min: number | undefined, max: number | undefined): boolean {
+    if (min && max) {
       return value >= min && value <= max;
     }
     return false;
@@ -186,7 +197,7 @@ export class ProductListComponent implements OnInit {
   getProdAttrVal(prod: Product, attrName: string): string | number {
     let result: string | number = '';
     prod.attributes?.forEach(attr => {
-      if(attr.key.toLowerCase() === attrName.toLowerCase()){
+      if (attr.key.toLowerCase() === attrName.toLowerCase()) {
         result = attr.value;
       }
     });

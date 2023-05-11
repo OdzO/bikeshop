@@ -21,18 +21,13 @@ describe('AdminGuard', () => {
     });
 
     router = TestBed.inject(Router);
-    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-
     authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
     
     guard = TestBed.inject(AdminGuard);
   });
 
-  it('should be created', () => {
-    expect(guard).toBeTruthy();
-  });
-
   it('should redirect to login if user is not admin', () => {
+    spyOn(router, 'navigate').and.returnValue(Promise.reject(Error('Navigate error')));
     authServiceSpy.isUserAdmin = jasmine.createSpy().and.returnValue(false);
     guard.canActivate();
     expect(router.navigate).toHaveBeenCalledWith(['login']);

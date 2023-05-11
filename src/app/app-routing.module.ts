@@ -9,6 +9,7 @@ import { UserGuard } from './guards/user.guard';
 const routes: Routes = [
   { path: '', loadChildren: () => import('./modules/product-list-module.module').then(m => m.ProductListModuleModule) },
   { path: 'product-list', loadChildren: () => import('./modules/product-list-module.module').then(m => m.ProductListModuleModule) },
+  { path: 'product-list/:type', loadChildren: () => import('./modules/product-list-module.module').then(m => m.ProductListModuleModule) },
   { path: 'login', loadChildren: () => import('./modules/login.module').then(m => m.LoginModule) },
   { path: 'verification', loadChildren: () => import('./modules/verification-module.module').then(m => m.VerificationModuleModule) },
   { path: 'cart', loadChildren: () => import('./modules/cart-page-module.module').then(m => m.CartPageModuleModule) },
