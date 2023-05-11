@@ -5,11 +5,13 @@ import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { FilterService } from 'src/app/services/filter.service';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 describe('ProductFilterComponent', () => {
   let component: ProductFilterComponent;
   let fixture: ComponentFixture<ProductFilterComponent>;
   let filterSvc: FilterService;
+  let router: Router;
 
   beforeEach(async () => {
     const spy = jasmine.createSpyObj('FilterService', ['changeFilter']);
@@ -22,6 +24,7 @@ describe('ProductFilterComponent', () => {
     .compileComponents();
 
     filterSvc = TestBed.inject(FilterService);
+    router = TestBed.inject(Router);
 
     fixture = TestBed.createComponent(ProductFilterComponent);
     component = fixture.componentInstance;
@@ -49,6 +52,14 @@ describe('ProductFilterComponent', () => {
     component.filter = {name: 'Price', type: 'range', values: [120,300,150,500,300,60], selectedMin: 120, selectedMax: 300};
     fixture.detectChanges();
     expect(component.filter.rangeMin).toEqual(60);
+  });
+
+  it('should navigate to all products', () => {
+    spyOn(router, 'navigate').and.returnValue(Promise.reject(Error('Navigate error')));
+    component.filter = {name: 'Price', type: 'range', values: [120,300,150,500,300,60], selectedMin: 120, selectedMax: 300};
+    fixture.detectChanges();
+    component.navigateToAllProducts();
+    expect(router.navigate).toHaveBeenCalledWith(['product-list']);
   });
 
 });

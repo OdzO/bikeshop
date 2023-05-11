@@ -19,6 +19,13 @@ import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { FilterService } from 'src/app/services/filter.service';
 import { SalePipe } from 'src/app/pipes/sale.pipe';
+import { ActivatedRoute } from '@angular/router';
+
+class ActivateRouteValueClass {
+  get(): string{
+    return "frame";
+  }
+}
 
 describe('ProductListComponent', () => {
   let component: ProductListComponent;
@@ -38,30 +45,20 @@ describe('ProductListComponent', () => {
     ScannedCount: 2,
   };
 
-  const mockShopData = {
-    Items: [
-      {
-        key: 'ProductTypes',
-        value: [{ "S": "Frame" }, { "S": "Handlebar" }, { "S": "Saddle" }, { "S": "Crankset" }]
-      }
-    ],
-    Count: 1,
-    ScannedCount: 1,
-  }
+  const actRouteValue = new ActivateRouteValueClass();
 
   beforeEach(async () => {
-    const spy = jasmine.createSpyObj('DynamodbService', ['getProducts', 'getShopData']);
+    const spy = jasmine.createSpyObj('DynamodbService', ['getProducts']);
     const spy2 = jasmine.createSpyObj('FilterService', ['getFilters']);
 
     await TestBed.configureTestingModule({
       imports: [MatSidenavModule, MatCardModule, MatIconModule, MatButtonToggleModule, MatSelectModule, MatButtonModule, MatSliderModule, BrowserAnimationsModule, FormsModule, SalePipe],
       declarations: [ProductListComponent, ProductCardComponent, ProductFilterComponent],
-      providers: [HttpClient, HttpHandler, MatSnackBar, { provide: DynamodbService, useValue: spy }, { provide: FilterService, useValue: spy2 }],
+      providers: [HttpClient, HttpHandler, MatSnackBar, { provide: DynamodbService, useValue: spy }, { provide: FilterService, useValue: spy2 }, { provide: ActivatedRoute, useValue: {paramMap: of(actRouteValue)}}],
     }).compileComponents();
 
     dbServiceSpy = TestBed.inject(DynamodbService) as jasmine.SpyObj<DynamodbService>;
     dbServiceSpy.getProducts = jasmine.createSpy().and.returnValue(of(mockProductList));
-    dbServiceSpy.getShopData = jasmine.createSpy().and.returnValue(of(mockShopData));
 
     filterServiceSpy = TestBed.inject(FilterService) as jasmine.SpyObj<FilterService>;
     filterServiceSpy.getFilters = jasmine.createSpy().and.returnValue(of([]));

@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -25,7 +26,7 @@ describe('AppComponent', () => {
         AppComponent,
         HeaderComponent
       ],
-      providers: [MatSnackBar]
+      providers: [HttpClient, HttpHandler, MatSnackBar]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);

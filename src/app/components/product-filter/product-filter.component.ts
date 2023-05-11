@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Filter } from 'src/app/interfaces/filter';
 import { FilterService } from 'src/app/services/filter.service';
 
@@ -11,7 +12,7 @@ export class ProductFilterComponent implements OnInit {
 
   @Input() filter!: Filter;
 
-  constructor(private filterService: FilterService) {
+  constructor(private filterService: FilterService, private router: Router) {
 
   }
 
@@ -49,8 +50,8 @@ export class ProductFilterComponent implements OnInit {
 
   setValue(value: string) {
     if (this.filter.selected) {
-      if (this.filter.selected.includes(value)) {
-        this.filter.selected = this.filter.selected.filter(v => v != value);
+      if (this.filter.selected.includes(value.toLowerCase())) {
+        this.filter.selected = this.filter.selected.filter(v => v != value.toLowerCase());
       } else {
         this.filter.selected.push(value.toLowerCase());
 
@@ -69,6 +70,12 @@ export class ProductFilterComponent implements OnInit {
       sValues.push(String(v));
     });
     return sValues;
+  }
+
+  navigateToAllProducts(){
+    this.router.navigate(['product-list']).catch(error => {
+      alert(error.message);
+    });
   }
 
   isFilterActive(): boolean {

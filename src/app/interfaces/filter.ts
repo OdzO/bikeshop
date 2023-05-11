@@ -6,5 +6,6 @@ export interface Filter {
     rangeMin?: number,
     rangeMax?: number,
     values?: (string | number)[],
-    type?: string
+    type?: string,
+    generate?: boolean
 }

@@ -10,17 +10,20 @@ export class FilterService {
   filters = new Subject<Filter[]>();
   filtersValue: Filter[] = [];
 
-  changeFilter(filter: Filter){
+  changeFilter(filter: Filter): void {
+    if (filter.name === 'Type') {
+      this.filtersValue = [];
+    }
     this.filtersValue = this.filtersValue.filter(fv => fv.name !== filter.name);
-    if((filter.selected && filter.selected.length > 0) 
-      || (filter.selectedMin && filter.selectedMax && filter.rangeMin && filter.rangeMax && (filter.selectedMin > filter.rangeMin || filter.selectedMax < filter.rangeMax))){
+    if ((filter.selected && filter.selected.length > 0)
+      || (filter.selectedMin && filter.selectedMax && filter.rangeMin && filter.rangeMax && (filter.selectedMin > filter.rangeMin || filter.selectedMax < filter.rangeMax))) {
       this.filtersValue.push(filter);
     }
     this.filters.next(this.filtersValue);
   }
 
-  getFilters(): Subject<Filter[]>{
+  getFilters(): Subject<Filter[]> {
     return this.filters;
   }
-  
+
 }

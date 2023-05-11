@@ -35,7 +35,14 @@
   </mat-toolbar-row>
 
   <mat-toolbar-row style="height: 40px">
-    <a mat-flat-button routerLink="/product-list" routerLinkActive="active" ariaCurrentWhenActive="page" style="background-color: transparent; color: white;">Products</a>
-    <a mat-flat-button routerLink="/admin" routerLinkActive="active" ariaCurrentWhenActive="page" style="background-color: transparent; color: white;" *ngIf="auth.isUserAdmin()">Admin</a>
+    <a mat-flat-button [matMenuTriggerFor]="prodSubMenu" ariaCurrentWhenActive="page">Products</a>
+    <mat-menu #prodSubMenu="matMenu">
+      <ul>
+        <li *ngFor="let t of productTypes">
+          <a mat-flat-button routerLink="/product-list/{{ t | lowercase }}" routerLinkActive="active">{{ t }}</a>
+        </li>
+      </ul>
+    </mat-menu>
+    <a mat-flat-button routerLink="/admin" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="auth.isUserAdmin()">Admin</a>
   </mat-toolbar-row>
 </mat-toolbar>

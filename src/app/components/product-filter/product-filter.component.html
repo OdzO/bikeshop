@@ -1,4 +1,4 @@
-<div *ngIf="filter.type === 'multiselect'" class="filter" [ngClass]="{ active: isFilterActive() }">
+<div *ngIf="filter.generate && filter.type === 'multiselect'" class="filter" [ngClass]="{ active: isFilterActive() }">
   <div>
     <span>{{ filter.name }}</span>
   </div>
@@ -7,14 +7,14 @@
       *ngFor="let v of getStringValues()"
       mat-flat-button
       (click)="this.setValue(v)"
-      [color]="this.filter.selected?.includes(v) ? 'primary' : 'none'"
+      [color]="this.filter.selected?.includes(v.toLowerCase()) ? 'primary' : 'none'"
     >
       {{ v }}
     </button>
   </div>
 </div>
 
-<div *ngIf="filter.type === 'range'" class="filter" [ngClass]="{ active: isFilterActive() }">
+<div *ngIf="filter.generate && filter.type === 'range'" class="filter" [ngClass]="{ active: isFilterActive() }">
   <div>
     <span>{{ filter.name }}: {{ filter.selectedMin }} - {{ filter.selectedMax }}</span>
   </div>
@@ -22,4 +22,18 @@
     <input [(ngModel)]="filter.selectedMin" matSliderStartThumb (dragEnd)="setRange()" />
     <input [(ngModel)]="filter.selectedMax" matSliderEndThumb (dragEnd)="setRange()" />
   </mat-slider>
+</div>
+
+<div *ngIf="!filter.generate && filter.name === 'Type'" class="filter" [ngClass]="{ active: isFilterActive() }">
+  <div>
+    <span>{{ filter.name }}</span>
+  </div>
+  <div>
+    <button mat-flat-button color="primary">
+      {{ filter.selected }}
+    </button>
+    <button mat-flat-button (click)="navigateToAllProducts()">
+      Show all
+    </button>
+  </div>
 </div>

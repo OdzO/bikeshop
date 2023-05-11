@@ -21,19 +21,13 @@ describe('UserGuard', () => {
     });
 
     router = TestBed.inject(Router);
-    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-
     authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
     
-
     guard = TestBed.inject(UserGuard);
   });
 
-  it('should be created', () => {
-    expect(guard).toBeTruthy();
-  });
-
   it('should redirect to login if user not logged in', () => {
+    spyOn(router, 'navigate').and.returnValue(Promise.reject(Error('Navigate error')));
     authServiceSpy.isLoggedIn = jasmine.createSpy().and.returnValue(false);
     guard.canActivate();
     expect(router.navigate).toHaveBeenCalledWith(['login']);
