@@ -11,7 +11,7 @@ describe('DynamodbService', () => {
 
   beforeEach(() => {
     const authSpy = jasmine.createSpyObj('AuthService', ['getToken']);
-    const httpSpy = jasmine.createSpyObj('HttpClient', ['post', 'get']);
+    const httpSpy = jasmine.createSpyObj('HttpClient', ['post', 'get', 'delete']);
 
     TestBed.configureTestingModule({
       providers: [{ provide: AuthService, useValue: authSpy }, { provide: HttpClient, useValue: httpSpy }]
@@ -39,6 +39,12 @@ describe('DynamodbService', () => {
     authServiceSpy.getToken = jasmine.createSpy().and.returnValue('mockToken');
     service.commitProduct(<Product>{});
     expect(httpServiceSpy.post).toHaveBeenCalled();
+  });
+
+  it('should delete product', () => {
+    authServiceSpy.getToken = jasmine.createSpy().and.returnValue('mockToken');
+    service.deleteProduct(<Product>{});
+    expect(httpServiceSpy.delete).toHaveBeenCalled();
   });
 
 });

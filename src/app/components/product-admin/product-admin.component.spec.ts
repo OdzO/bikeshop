@@ -37,7 +37,7 @@ describe('ProductAdminComponent', () => {
   }
 
   beforeEach(async () => {
-    const spy = jasmine.createSpyObj('DynamodbService', ['getProducts','commitProduct', 'getShopData']);
+    const spy = jasmine.createSpyObj('DynamodbService', ['getProducts','commitProduct', 'getShopData', 'deleteProduct']);
 
     await TestBed.configureTestingModule({
       imports: [MatDialogModule, MatTableModule],
@@ -50,6 +50,7 @@ describe('ProductAdminComponent', () => {
     dbServiceSpy.getProducts = jasmine.createSpy().and.returnValue(of(mockProductList));
     dbServiceSpy.getShopData = jasmine.createSpy().and.returnValue(of(mockShopData));
     dbServiceSpy.commitProduct = jasmine.createSpy().and.returnValue(of(true));
+    dbServiceSpy.deleteProduct = jasmine.createSpy().and.returnValue(of(true));
 
     fixture = TestBed.createComponent(ProductAdminComponent);
     component = fixture.componentInstance;
@@ -109,6 +110,15 @@ describe('ProductAdminComponent', () => {
     spyOn(component.dialog, 'open').and.returnValue(dialogRefSpyObj);
     component.onAddAttribute();
     expect(component.editProduct?.attributes).toEqual([{ key: 'year', value: 2022 }]);
+  });
+
+  it('should delete product', () => {
+    spyOn(component.table, 'renderRows');
+    const dialogRefSpyObj = jasmine.createSpyObj({ afterClosed : of(true), close: true });
+    spyOn(component.dialog, 'open').and.returnValue(dialogRefSpyObj);
+    
+    component.onDeleteProduct(component.products[component.products.length]);
+    expect(dbServiceSpy.deleteProduct).toHaveBeenCalled();
   });
   
 });
