@@ -4,6 +4,7 @@ import { MatTable } from '@angular/material/table';
 import { Product } from 'src/app/interfaces/product';
 import { DynamodbService } from 'src/app/services/dynamodb.service';
 import { DialogNewProductAttributeComponent } from '../dialog-new-product-attribute/dialog-new-product-attribute.component';
+import { DialogDeleteProductComponent } from '../dialog-delete-product/dialog-delete-product.component';
 
 @Component({
   selector: 'app-product-admin',
@@ -26,7 +27,7 @@ export class ProductAdminComponent {
     this.db.getShopData().subscribe(resp => {
       this.types = resp.Items[resp.Items.findIndex(x => x.key === 'ProductTypes')].value;
     });
-   }
+  }
 
   onEdit(pkey: string) {
     this.products.forEach(p => {
@@ -70,21 +71,38 @@ export class ProductAdminComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (this.editProduct && result.attrName && result.attrValue) {
         if (this.editProduct.attributes) {
-          this.editProduct.attributes.push({key: result.attrName, value: result.attrValue});
+          this.editProduct.attributes.push({ key: result.attrName, value: result.attrValue });
         } else {
-          this.editProduct.attributes = [{key: result.attrName, value: result.attrValue}];
+          this.editProduct.attributes = [{ key: result.attrName, value: result.attrValue }];
         }
       }
     });
   }
 
-  onDeleteAttribute(attrKey: string){
-      if(this.editProduct?.attributes){
-        this.editProduct.attributes = this.editProduct?.attributes?.filter(attr => attr.key !== attrKey);
-      }
+  onDeleteAttribute(attrKey: string) {
+    if (this.editProduct?.attributes) {
+      this.editProduct.attributes = this.editProduct?.attributes?.filter(attr => attr.key !== attrKey);
+    }
   }
 
-  typeof(value: unknown){
+  onDeleteProduct(delProd: Product) {
+    const dialogRef = this.dialog.open(DialogDeleteProductComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.db.deleteProduct(delProd).subscribe({
+          next: () => {
+            this.db.getProducts().subscribe(resp => {
+              this.products = resp.Items;
+              this.table.renderRows();
+            });
+          }
+        });
+      }
+    });
+  }
+
+  typeof(value: unknown) {
     return typeof value;
   }
 

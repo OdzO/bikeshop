@@ -31,6 +31,15 @@
             <mat-icon>edit</mat-icon>
           </button>
           <button
+            *ngIf="editProduct === null"
+            mat-icon-button
+            color="basic"
+            aria-label="Example icon button with a delete icon"
+            (click)="onDeleteProduct(element)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button
             *ngIf="editProduct && element.pkey === editProduct.pkey"
             mat-icon-button
             color="basic"

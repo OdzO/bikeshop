@@ -23,9 +23,10 @@ export class DynamodbService {
    * Creates the httpOptions object with a valid userToken from the signed in user.
    * This is how you can validate a user when calling a restricted API address.
    * 
+   * @param {unknown} deleteObject If this is used for a delete call, add an object with table name and the key of the product to delete
    * @returns The full httpOptions object with the token in the HttpHeader
    */
-  private setHeader(): object {
+  private setHeader(deleteObject?: unknown): object {
     const token = this.auth.getToken();
     const httpOptions = {
       headers: new HttpHeaders({
@@ -33,6 +34,7 @@ export class DynamodbService {
         Authorization: token,
       }),
       observe: 'response',
+      body: deleteObject
     };
     return httpOptions;
   }
@@ -66,5 +68,16 @@ export class DynamodbService {
   commitProduct(product: Product): Observable<object> {
     const entry = { TableName: 'Products', Item: product };
     return this.http.post(environment.dynamoDbApi, entry, this.setHeader());
+  }
+
+  /**
+   * Deletes a single product from DynamoDB.
+   * 
+   * @param {Product} product  The product to delete
+   * @returns An Observable with the response body from the DynamoDB API
+   */
+  deleteProduct(delProduct: Product): Observable<object> {
+    const entry = { TableName: 'Products', Key: { pkey: delProduct.pkey } };
+    return this.http.delete(environment.dynamoDbApi, this.setHeader(entry));
   }
 }

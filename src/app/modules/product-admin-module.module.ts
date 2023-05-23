@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Routes, RouterModule } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { DialogDeleteProductComponent } from '../components/dialog-delete-product/dialog-delete-product.component';
 
 const routes: Routes = [
   {
@@ -21,7 +22,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [ProductAdminComponent, DialogNewProductAttributeComponent],
+  declarations: [ProductAdminComponent, DialogNewProductAttributeComponent, DialogDeleteProductComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
