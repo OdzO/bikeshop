@@ -23,7 +23,7 @@ This is a home project to learn and demo how a simple webshop can be built with 
 - Documentation generated
 
 ### AWS (backend)
-![Employee data](/repository/documentation/images/bikeshop-aws.png?raw=true "AWS diagram")
+![Employee data](/documentation/images/bikeshop-aws.png?raw=true "AWS diagram")
 - S3
 Storage for the final build of the Angular application. Accessible online.
 - DynamoDB
