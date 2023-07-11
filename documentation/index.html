@@ -46,7 +46,9 @@
 <li>Admin user (edit product data)</li>
 </ul>
 <h3 id="crud-actions-on-products-for-admins">CRUD actions on products for admins</h3>
-<p>- </p>
+<ul>
+<li>Create/update/delete products on the UI</li>
+</ul>
 <h2 id="structure">Structure</h2>
 <h3 id="angular-frontend">Angular (frontend)</h3>
 <ul>
@@ -54,9 +56,12 @@
 <li>Documentation generated</li>
 </ul>
 <h3 id="aws-backend">AWS (backend)</h3>
+<p><img src="/documentation/images/bikeshop-aws.png?raw=true" alt="AWS diagram" class="img-responsive" title="AWS diagram"></p>
 <ul>
-<li>S3
-Storage for the final build of the Angular application. Accessible online.</li>
+<li>S3</li>
+</ul>
+<p>Storage for the final build of the Angular application. Accessible online.</p>
+<ul>
 <li>DynamoDB
 DB storage for product and site data.</li>
 <li>Lambda
@@ -67,10 +72,10 @@ Provide access to the Lambda function with credential handling (Cognito)</li>
 User handling: some actions in the applications only available for users in specific groups (logged in customer, admin). Product data manipulation (create, delete, update) only accessable for admins.</li>
 </ul>
 <h3 id="development-flow">Development flow</h3>
+<p><img src="/documentation/images/bikeshop-devflow.png?raw=true" alt="Dev flow" class="img-responsive" title="Dev flow"></p>
 <ul>
 <li>Github with actions</li>
 <li>SonarCloud</li>
-<li>Compodoc</li>
 </ul>
 
 

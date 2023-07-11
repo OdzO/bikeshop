@@ -14,7 +14,7 @@ This is a home project to learn and demo how a simple webshop can be built with 
 - Admin user (edit product data)
 
 ### CRUD actions on products for admins
-- 
+- Create/update/delete products on the UI
 
 ## Structure
 
@@ -23,8 +23,9 @@ This is a home project to learn and demo how a simple webshop can be built with 
 - Documentation generated
 
 ### AWS (backend)
-![Employee data](/documentation/images/bikeshop-aws.png?raw=true "AWS diagram")
+![AWS diagram](/documentation/images/bikeshop-aws.png?raw=true "AWS diagram")
 - S3
+
 Storage for the final build of the Angular application. Accessible online.
 - DynamoDB
 DB storage for product and site data.
@@ -36,7 +37,7 @@ Provide access to the Lambda function with credential handling (Cognito)
 User handling: some actions in the applications only available for users in specific groups (logged in customer, admin). Product data manipulation (create, delete, update) only accessable for admins.
 
 ### Development flow
+![Dev flow](/documentation/images/bikeshop-devflow.png?raw=true "Dev flow")
 - Github with actions
 - SonarCloud
-- Compodoc
 
