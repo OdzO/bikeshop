@@ -1,27 +1,42 @@
 # Bike Shop
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.2.
+This is a home project to learn and demo how a simple webshop can be built with Angular as frontend, AWS as backend and integrate developer tools like Github and SonarCloud.
 
-## Development server
+## Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+### Basic webshop
+- List products (dynamic filtering)
+- Manage cart
 
-## Code scaffolding
+### User handling with AWS Cognito
+- Guest customer (without login)
+- Customer sign up and login
+- Admin user (edit product data)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### CRUD actions on products for admins
+- 
 
-## Build
+## Structure
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Angular (frontend)
+- Angular Material
+- Documentation generated
 
-## Running unit tests
+### AWS (backend)
+![Employee data](/repository/documentation/images/bikeshop-aws.png?raw=true "AWS diagram")
+- S3
+Storage for the final build of the Angular application. Accessible online.
+- DynamoDB
+DB storage for product and site data.
+- Lambda
+The logic for CRUD operations on the database.
+- API Gateway
+Provide access to the Lambda function with credential handling (Cognito)
+- Cognito
+User handling: some actions in the applications only available for users in specific groups (logged in customer, admin). Product data manipulation (create, delete, update) only accessable for admins.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Development flow
+- Github with actions
+- SonarCloud
+- Compodoc
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
