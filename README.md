@@ -35,6 +35,6 @@ This is a home project to learn and demo how a simple webshop can be built with 
 ### Github Actions
 ![Dev flow](/bikeshop-devflow.png?raw=true "Dev flow")
 - Every feature branch commit triggers a SonarCloud scan
-- Each merge to main branch requries to meet SonarCloud quality gate and signed
+- Each merge to main branch requries to meet SonarCloud quality gate and be signed
 - Every main commit triggers a SonarCloud scan and a deploy to AWS (application built by the latest code from main)
 
