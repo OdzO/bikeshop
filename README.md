@@ -1,27 +1,40 @@
 # Bike Shop
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.2.
+This is a home project to learn and demo how a simple webshop can be built with Angular as frontend, AWS as backend and integrate developer tools like Github and SonarCloud.
 
-## Development server
+[Demo page](http://odzo-bikeshop.s3-website.us-east-2.amazonaws.com/ "Demo page")
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Features
 
-## Code scaffolding
+### Basic webshop
+- List products (dynamic filtering)
+- Manage cart
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### User handling with AWS Cognito
+- Guest customer (without login)
+- Customer sign up and login
+- Admin user (edit product data)
 
-## Build
+### CRUD actions on products for admins
+- Create/update/delete products on the UI
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Structure
 
-## Running unit tests
+### Angular (frontend)
+- Angular Material
+- Documentation: generate with command `$ npm run compodoc`
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### AWS (backend)
+![AWS diagram](/bikeshop-aws.png?raw=true "AWS diagram")
+* __S3__ - Storage for the final build of the Angular application. Accessible online.
+* __DynamoDB__ - DB storage for product and site data.
+* __Lambda__ - The logic for CRUD operations on the database.
+* __API Gateway__ - Provide access to the Lambda function with credential handling (Cognito)
+* __Cognito__ - User handling: some actions in the applications only available for users in specific groups (logged in customer, admin). Product data manipulation (create, delete, update) only accessable for admins.
 
-## Running end-to-end tests
+### Github Actions
+![Dev flow](/bikeshop-devflow.png?raw=true "Dev flow")
+- Every feature branch commit triggers a SonarCloud scan
+- Each merge to main branch requries to meet SonarCloud quality gate and be signed
+- Every main commit triggers a SonarCloud scan and a deploy to AWS (application built by the latest code from main)
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
