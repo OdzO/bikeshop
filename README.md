@@ -32,8 +32,9 @@ This is a home project to learn and demo how a simple webshop can be built with 
 * __API Gateway__ - Provide access to the Lambda function with credential handling (Cognito)
 * __Cognito__ - User handling: some actions in the applications only available for users in specific groups (logged in customer, admin). Product data manipulation (create, delete, update) only accessable for admins.
 
-### Development flow
+### Github Actions
 ![Dev flow](/bikeshop-devflow.png?raw=true "Dev flow")
-- Github with actions
-- SonarCloud
+- Every feature branch commit triggers a SonarCloud scan
+- Each merge to main branch requries to meet SonarCloud quality gate and signed
+- Every main commit triggers a SonarCloud scan and a deploy to AWS (application built by the latest code from main)
 
