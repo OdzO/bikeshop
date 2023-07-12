@@ -25,7 +25,7 @@ This is a home project to learn and demo how a simple webshop can be built with 
 - Documentation: generate with command `$ npm run compodoc`
 
 ### AWS (backend)
-![AWS diagram](/documentation/images/bikeshop-aws.png?raw=true "AWS diagram")
+![AWS diagram](/bikeshop-aws.png?raw=true "AWS diagram")
 * __S3__ - Storage for the final build of the Angular application. Accessible online.
 * __DynamoDB__ - DB storage for product and site data.
 * __Lambda__ - The logic for CRUD operations on the database.
@@ -33,7 +33,7 @@ This is a home project to learn and demo how a simple webshop can be built with 
 * __Cognito__ - User handling: some actions in the applications only available for users in specific groups (logged in customer, admin). Product data manipulation (create, delete, update) only accessable for admins.
 
 ### Development flow
-![Dev flow](/documentation/images/bikeshop-devflow.png?raw=true "Dev flow")
+![Dev flow](/bikeshop-devflow.png?raw=true "Dev flow")
 - Github with actions
 - SonarCloud
 
