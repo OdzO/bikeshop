@@ -26,16 +26,11 @@ This is a home project to learn and demo how a simple webshop can be built with 
 
 ### AWS (backend)
 ![AWS diagram](/documentation/images/bikeshop-aws.png?raw=true "AWS diagram")
-* S3
-Storage for the final build of the Angular application. Accessible online.
-* DynamoDB
-DB storage for product and site data.
-* Lambda
-The logic for CRUD operations on the database.
-* API Gateway
-Provide access to the Lambda function with credential handling (Cognito)
-* Cognito
-User handling: some actions in the applications only available for users in specific groups (logged in customer, admin). Product data manipulation (create, delete, update) only accessable for admins.
+* S3 - Storage for the final build of the Angular application. Accessible online.
+* DynamoDB - DB storage for product and site data.
+* Lambda - The logic for CRUD operations on the database.
+* API Gateway - Provide access to the Lambda function with credential handling (Cognito)
+* Cognito - User handling: some actions in the applications only available for users in specific groups (logged in customer, admin). Product data manipulation (create, delete, update) only accessable for admins.
 
 ### Development flow
 ![Dev flow](/documentation/images/bikeshop-devflow.png?raw=true "Dev flow")
